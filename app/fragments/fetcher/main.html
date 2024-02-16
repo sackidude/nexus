@@ -1,4 +1,17 @@
 <div>
+    <script>
+        let pxHeight = 0;
+        document.addEventListener("mousemove", (e)=>{
+            let rect = e.target.getBoundingClientRect();
+            pxHeight = e.clientX - rect.left;
+        });
+    </script>
     <a>Trial-{{ .trial }} <br> Image: {{ .image }} <br> Time: {{ .time }} </a>
-    <img src="{{ .path }}" alt="upside-down measuring glass filled with water and carbon dioxide that pushes down the water.">
+    <img 
+        src="{{ .path }}" 
+        alt="upside-down measuring glass filled with water and carbon dioxide that pushes down the water."
+        hx-post="/user-image-data" 
+        hx-trigger="click"
+        hx-headers="js:{pxHeight: pxHeight }" {{/*TODO: make sure this is safe*/}}
+    >
 </div>
