@@ -6,6 +6,13 @@
     <script src="https://unpkg.com/htmx.org@1.9.10" integrity="sha384-D1Kt99CQMDuVetoL1lrYwg5t+9QdHe7NLX/SoJYkXDFfX37iInKRy5xLSi8nO7UC" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="stylesheets/style.css">
     <title>Jästlabben</title>
+    <script>
+    let pxHeight = 0;
+    document.addEventListener("mousemove", (e)=>{
+        let rect = e.target.getBoundingClientRect();
+        pxHeight = e.clientX - rect.left;
+    });
+</script>
 </head>
 <body>
     <h1>Main</h1>
