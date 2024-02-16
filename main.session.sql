@@ -19,3 +19,6 @@ CREATE TABLE Images(
 );
 ALTER TABLE
     Images ADD CONSTRAINT `image_trial_foreign` FOREIGN KEY(`trial`) REFERENCES Trials(`trial-number`);
+
+-- @block
+SELECT id, trial, time FROM images WHERE filename = "1.jpg";
