@@ -1,3 +1,5 @@
 __debug*
 *.bak
 .vscode
+node_modules
+package-lock.json
