@@ -12,6 +12,8 @@ CREATE TABLE `trial`(
     `trial-number` SMALLINT NOT NULL,
     `directory-name` VARCHAR(255) NOT NULL,
     `start-time` DATETIME NOT NULL,
+    `zero-height` SMALLINT NOT NULL,
+    `thousand-milliliter-height` SMALLINT NOT NULL,
     `description` TEXT NULL
 );
 ALTER TABLE
