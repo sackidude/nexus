@@ -1,2 +1,2 @@
 # nexus
-Data handling for yeast project.
+Data handling website for yeast project.
