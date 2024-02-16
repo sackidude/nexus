@@ -1,16 +1,16 @@
 package main
 
 import (
-	"fmt"
-	"log"
+	"html/template"
 	"net/http"
 )
 
 func main() {
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		log.Printf("http request: %s", r.URL.Path)
-		fmt.Fprintf(w, "Hello, you've requested: %s\n", r.URL.Path)
-	})
+	main := func(w http.ResponseWriter, r *http.Request) {
+		tmpl := template.Must(template.ParseFiles("public/index.html"))
+		tmpl.Execute(w, nil)
+	}
+	http.HandleFunc("/", main)
 
 	http.ListenAndServe("localhost:8080", nil)
 }

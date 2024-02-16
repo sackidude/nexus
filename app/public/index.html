@@ -3,9 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://unpkg.com/htmx.org@1.9.10" integrity="sha384-D1Kt99CQMDuVetoL1lrYwg5t+9QdHe7NLX/SoJYkXDFfX37iInKRy5xLSi8nO7UC" crossorigin="anonymous"></script>
     <title>Jästlabben</title>
 </head>
 <body>
     <h1>Main Page</h1>
+    <button hx-post="/image-request" hx-trigger="click" hx-swap="innerHTML">Request image</button>
+    <button hx-post="/data-view" hx-trigger="click" hx-swap="innerHTML">View data</button>
 </body>
 </html>
