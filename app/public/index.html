@@ -10,8 +10,8 @@
 <body>
     <h1>Main</h1>
     <div id="option-holder">
-        <button hx-post="/image-request" hx-trigger="click" hx-swap="outerHTML" hx-target="#option-holder">Request image</button>
-        <button hx-post="/data-view" hx-trigger="click" hx-swap="outerHTML" hx-target="#option-holder">View data</button>    
+        <button hx-get="/image-request" hx-trigger="click" hx-swap="outerHTML" hx-target="#option-holder">Request image</button>
+        <button hx-get="/data-view" hx-trigger="click" hx-swap="outerHTML" hx-target="#option-holder">View data</button>    
     </div>
 </body>
 </html>
