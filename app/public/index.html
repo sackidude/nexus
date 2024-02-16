@@ -7,8 +7,10 @@
     <title>Jästlabben</title>
 </head>
 <body>
-    <h1>Main Page</h1>
-    <button hx-post="/image-request" hx-trigger="click" hx-swap="innerHTML">Request image</button>
-    <button hx-post="/data-view" hx-trigger="click" hx-swap="innerHTML">View data</button>
+    <h1>Main</h1>
+    <div id="option-holder">
+        <button hx-post="/image-request" hx-trigger="click" hx-swap="outerHTML" hx-target="#option-holder">Request image</button>
+        <button hx-post="/data-view" hx-trigger="click" hx-swap="outerHTML" hx-target="#option-holder">View data</button>    
+    </div>
 </body>
 </html>
