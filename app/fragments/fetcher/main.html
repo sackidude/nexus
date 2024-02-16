@@ -1,11 +1,4 @@
-<div>
-    <script>
-        let pxHeight = 0;
-        document.addEventListener("mousemove", (e)=>{
-            let rect = e.target.getBoundingClientRect();
-            pxHeight = e.clientX - rect.left;
-        });
-    </script>
+<div id="image-data-display">
     <a>Trial-{{ .trial }} <br> Image: {{ .image }} <br> Time: {{ .time }} </a>
     <img 
         src="{{ .path }}" 
@@ -13,5 +6,7 @@
         hx-post="/user-image-data" 
         hx-trigger="click"
         hx-headers="js:{pxHeight: pxHeight }" {{/*TODO: make sure this is safe*/}}
+        hx-target="#image-data-display"
+        hx-swap="outerHTML"
     >
 </div>
