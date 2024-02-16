@@ -7,11 +7,8 @@ import (
 )
 
 func main() {
-	main := func(w http.ResponseWriter, r *http.Request) {
-		tmpl := template.Must(template.ParseFiles("public/index.html"))
-		tmpl.Execute(w, nil)
-	}
-	http.HandleFunc("/", main)
+	fs := http.FileServer(http.Dir("./public"))
+	http.Handle("/", fs)
 
 	// HTMX triggers
 	imageRequest := func(w http.ResponseWriter, r *http.Request) {
