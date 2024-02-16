@@ -3,3 +3,4 @@ __debug*
 .vscode
 node_modules
 package-lock.json
+credentials.json
