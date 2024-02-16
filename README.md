@@ -1,2 +1,2 @@
 # nexus
-Full stack social network for my highschool work.
+Data handling for yeast project.
