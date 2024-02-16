@@ -29,7 +29,7 @@ func getNewImageData() map[string]string {
 }
 
 func main() {
-	// Basic stating hosting
+	// Basic static hosting
 	fs := http.FileServer(http.Dir("./public"))
 	http.Handle("/", fs)
 
