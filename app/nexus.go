@@ -9,6 +9,7 @@ import (
 	"net/http"
 	"os"
 	"strconv"
+	"time"
 
 	_ "github.com/go-sql-driver/mysql"
 )
@@ -21,7 +22,7 @@ func getNewImageData(db *sql.DB) map[string]string {
 		filename string
 		time     string
 	)
-	rows, _ := db.Query("SELECT id, trial, filename, time FROM images WHERE analyzed=0 LIMIT 1")
+	rows, _ := db.Query("SELECT id, trial, filename, time FROM images ORDER BY last_analyzed ASC LIMIT 1")
 	defer rows.Close()
 	for rows.Next() {
 		err := rows.Scan(&id, &trial, &filename, &time)
@@ -42,10 +43,11 @@ func getNewImageData(db *sql.DB) map[string]string {
 }
 
 func updateVolumeData(db *sql.DB, id int, volume float64) {
+	formattedTime := time.Now().Format("2006-01-02 15:04:05")
 	query := fmt.Sprintf(
 		`UPDATE Images
-		SET volume=(1/(analyzed+1))*(analyzed*volume+%g), analyzed=analyzed+1
-		WHERE id=%d;`, volume, id)
+		SET volume=(1/(analyzed+1))*(analyzed*volume+%g), analyzed=analyzed+1, last_analyzed='%s'
+		WHERE id=%d;`, volume, formattedTime, id)
 
 	_, err := db.Exec(query)
 
