@@ -38,3 +38,10 @@ RENAME COLUMN last_analyzed TO last_seen
 UPDATE Images
 SET last_seen="2024-02-17 18:13:01"
 WHERE id=1;
+
+-- @block
+SELECT trial_num FROM Trials
+
+-- @block
+SELECT time, volume FROM Images
+WHERE trial=3

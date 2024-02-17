@@ -9,6 +9,7 @@ import (
 	"net/http"
 	"os"
 	"strconv"
+	"strings"
 	"time"
 
 	_ "github.com/go-sql-driver/mysql"
@@ -82,14 +83,53 @@ func calculateVolume(db *sql.DB, trialId int64, pxHeight float64) float64 {
 	return (pxHeight - float64(zero_height)) * ml_per_pixel
 }
 
-type datapoint struct {
-	time   int
-	volume float64
-}
+func generateGraphJSON(db *sql.DB) template.JS {
+	// Request to db
+	// First get all the trials
+	var trials []int
+	{
+		rows, _ := db.Query("SELECT trial_num FROM Trials")
+		defer rows.Close()
 
-// This is very temporary
-func generateGraphJSON() string {
-	return ""
+		var temp int
+		for rows.Next() {
+			rows.Scan(&temp)
+			trials = append(trials, temp)
+		}
+	}
+
+	// Get all of the datapoints in first trial to begin with
+	{
+		query := fmt.Sprintf("SELECT time, volume FROM Images WHERE trial=%d", trials[0])
+		rows, _ := db.Query(query)
+		defer rows.Close()
+
+		type datapoint struct {
+			datetime time.Time
+			volume   float64
+		}
+		var datapoints []datapoint
+		layout := "2006-01-02 15:04:05"
+		for rows.Next() {
+			var timestr string
+			var dp datapoint
+			rows.Scan(&timestr, &dp.volume)
+
+			dp.datetime, _ = time.Parse(layout, timestr)
+			datapoints = append(datapoints, dp)
+		}
+		// convert datapoints into the format js format
+		// That is [{x:1,y:2},{x:2,y:3}]
+		var jsonStrings []string
+		t0 := datapoints[0].datetime.Unix()
+		for _, v := range datapoints {
+			hours := float64(v.datetime.Unix()-t0) / 60.0
+			tempStr := fmt.Sprintf("{x:%.2f,y:%.1f}", hours, v.volume)
+			jsonStrings = append(jsonStrings, tempStr)
+		}
+		result := fmt.Sprintf(`[%s]`, strings.Join(jsonStrings, ","))
+		return template.JS(result)
+	}
 }
 
 func main() {
@@ -127,7 +167,7 @@ func main() {
 
 	dataViewer := func(w http.ResponseWriter, r *http.Request) {
 		tmpl, _ := template.New("t").Parse(string(viewerHTML))
-		graphData := generateGraphJSON()
+		graphData := generateGraphJSON(db)
 		tmpl.Execute(w, graphData)
 	}
 	http.HandleFunc("/data-view", dataViewer)
