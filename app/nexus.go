@@ -17,19 +17,26 @@ import (
 // TODO: replace all _ with real errorhandling and fallback options
 func getNewImageData(db *sql.DB) map[string]string {
 	var (
-		id       int
-		trial    int
-		filename string
-		time     string
+		id          int
+		trial       int
+		filename    string
+		pictureTime string
 	)
-	rows, _ := db.Query("SELECT id, trial, filename, time FROM images ORDER BY last_analyzed ASC LIMIT 1")
+	rows, _ := db.Query("SELECT id, trial, filename, time FROM images ORDER BY last_seen ASC LIMIT 1")
 	defer rows.Close()
 	for rows.Next() {
-		err := rows.Scan(&id, &trial, &filename, &time)
+		err := rows.Scan(&id, &trial, &filename, &pictureTime)
 		if err != nil {
 			println("error reading lines")
 		}
 	}
+
+	// Update the entry in the db to reflect that someone has seen it
+	go func() {
+		formattedTime := time.Now().Format("2006-01-02 15:04:05")
+		query := fmt.Sprintf(`UPDATE Images SET last_seen='%s' WHERE id=%d;`, formattedTime, id)
+		db.Exec(query)
+	}()
 
 	path := fmt.Sprintf("images/trial-%d/%s", trial, filename)
 
@@ -37,7 +44,7 @@ func getNewImageData(db *sql.DB) map[string]string {
 		"id":    fmt.Sprintf("%d", id),
 		"trial": fmt.Sprintf("%d", trial),
 		"image": filename,
-		"time":  time,
+		"time":  pictureTime,
 		"path":  path,
 	}
 }
@@ -46,7 +53,7 @@ func updateVolumeData(db *sql.DB, id int, volume float64) {
 	formattedTime := time.Now().Format("2006-01-02 15:04:05")
 	query := fmt.Sprintf(
 		`UPDATE Images
-		SET volume=(1/(analyzed+1))*(analyzed*volume+%g), analyzed=analyzed+1, last_analyzed='%s'
+		SET volume=(1/(analyzed+1))*(analyzed*volume+%g), analyzed=analyzed+1, last_seen='%s'
 		WHERE id=%d;`, volume, formattedTime, id)
 
 	_, err := db.Exec(query)
@@ -75,12 +82,14 @@ func calculateVolume(db *sql.DB, trialId int64, pxHeight float64) float64 {
 	return (pxHeight - float64(zero_height)) * ml_per_pixel
 }
 
+type datapoint struct {
+	time   int
+	volume float64
+}
+
 // This is very temporary
-func getGraphData() map[string]string {
-	return map[string]string{
-		"trial-3": "This is where the data would be",
-		"trial-4": "This is where the data might be",
-	}
+func generateGraphJSON() string {
+	return ""
 }
 
 func main() {
@@ -118,7 +127,7 @@ func main() {
 
 	dataViewer := func(w http.ResponseWriter, r *http.Request) {
 		tmpl, _ := template.New("t").Parse(string(viewerHTML))
-		graphData := getGraphData()
+		graphData := generateGraphJSON()
 		tmpl.Execute(w, graphData)
 	}
 	http.HandleFunc("/data-view", dataViewer)

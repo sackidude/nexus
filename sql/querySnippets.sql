@@ -3,17 +3,17 @@ SELECT * FROM images LIMIT 10
 -- @block
 SELECT *
 FROM images 
-ORDER BY last_analyzed ASC 
+ORDER BY last_seen ASC 
 LIMIT 10
 
 -- @block
 UPDATE Images
-SET volume=(1/(analyzed+1))*(analyzed*volume+100), analyzed=analyzed+1, last_analyzed="2024-02-17 15:49:01"
+SET volume=(1/(analyzed+1))*(analyzed*volume+100), analyzed=analyzed+1
 WHERE id=1;
 
 -- @block
 UPDATE Images
--- SET volume=0, analyzed=0 -- COMMENTED OUT FOR SAFETY xD;
+SET volume=0, analyzed=0, last_seen=NULL
 
 -- @block
 SELECT zero_height, 1000_ml_height FROM Trials WHERE trial_num=3 LIMIT 1
@@ -28,9 +28,13 @@ MODIFY ml_per_pixel FLOAT;
 
 -- @block
 ALTER TABLE Images
-ADD COLUMN last_analyzed DATETIME;
+ADD COLUMN last_seen DATETIME;
+
+-- @block
+ALTER TABLE Images
+RENAME COLUMN last_analyzed TO last_seen
 
 -- @block
 UPDATE Images
-SET volume=(1/(analyzed+1))*(analyzed*volume+88.2), analyzed=analyzed+1, last_analyzed='2024-02-17 15:57:54'
-WHERE id=2;
+SET last_seen="2024-02-17 18:13:01"
+WHERE id=1;
