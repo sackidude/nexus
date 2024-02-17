@@ -4,7 +4,7 @@ CREATE TABLE Trials(
     directory VARCHAR(10) NOT NULL,
     start DATETIME NOT NULL,
     zero_height SMALLINT NOT NULL,
-    1000_ml_height SMALLINT NOT NULL,
+    ml_per_pixel FLOAT NOT NULL,
     description TEXT NULL
 );
 

@@ -57,20 +57,20 @@ func updateVolumeData(db *sql.DB, id int, volume float64) {
 func calculateVolume(db *sql.DB, trialId int64, pxHeight float64) float64 {
 	// get zero height and 1000ml height from db
 	var (
-		zero_height        int
-		thousand_ml_height int // Can't start with number :/
+		zero_height  int
+		ml_per_pixel float64
 	)
-	query := fmt.Sprintf("SELECT zero_height, 1000_ml_height FROM Trials WHERE trial_num=%d LIMIT 1", trialId)
+	query := fmt.Sprintf("SELECT zero_height, ml_per_pixel FROM Trials WHERE trial_num=%d LIMIT 1", trialId)
 	rows, _ := db.Query(query)
 	defer rows.Close()
 	for rows.Next() {
-		err := rows.Scan(&zero_height, &thousand_ml_height)
+		err := rows.Scan(&zero_height, &ml_per_pixel)
 		if err != nil {
 			println("error reading lines")
 		}
 	}
 
-	return (pxHeight - float64(zero_height)) / float64(thousand_ml_height) * 1000
+	return (pxHeight - float64(zero_height)) * ml_per_pixel
 }
 
 // This is very temporary
@@ -135,7 +135,7 @@ func main() {
 
 		imageData := getNewImageData(db)
 		tmpl, _ := template.New("t").Parse(string(fetcherHTML))
-		tmpl.Execute(w, imageData) //TODO: Fix this temporary solution
+		tmpl.Execute(w, imageData)
 	}
 	http.HandleFunc("/user-image-data", imageDataRetrival)
 

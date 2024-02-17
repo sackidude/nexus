@@ -12,3 +12,15 @@ UPDATE Images
 
 -- @block
 SELECT zero_height, 1000_ml_height FROM Trials WHERE trial_num=3 LIMIT 1
+
+
+-- @block
+ALTER TABLE Trials 
+RENAME COLUMN 1000_ml_height TO ml_per_pixel;
+
+-- @block
+ALTER TABLE Trials
+MODIFY ml_per_pixel FLOAT
+-- @block
+UPDATE Trials
+SET ml_per_pixel=2.5

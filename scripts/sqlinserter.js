@@ -20,13 +20,13 @@ con.connect(err=>{
         const trialPath = path.join(imagesPath, "trial-" + trialNum)
         const t0 = fs.statSync(path.join(trialPath, "10.jpg")).mtime
         con.query(
-            `INSERT INTO Trials (trial_num, directory, start, zero_height, 1000_ml_height)
+            `INSERT INTO Trials (trial_num, directory, start, zero_height, ml_per_pixel)
             VALUES (
                 ${Number(trialNum)},
                 'trial-${trialNum}',
                 '${t0.toISOString().slice(0,19).replace('T', ' ')}',
                 0,
-                100
+                2.5 
             )`
         )
 
