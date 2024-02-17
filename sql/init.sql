@@ -19,3 +19,20 @@ CREATE TABLE Images(
 );
 ALTER TABLE
     Images ADD CONSTRAINT image_trial_foreign FOREIGN KEY(trial) REFERENCES Trials(trial_num);
+
+-- @block THESE ARE THE READINGS FROM MY OWN EXAMINATION
+UPDATE trials
+SET zero_height=49, ml_per_pixel=4.2
+WHERE trial_num=3;
+
+UPDATE trials
+SET zero_height=13, ml_per_pixel=6.024
+WHERE trial_num=4;
+
+UPDATE trials
+SET zero_height=5, ml_per_pixel=4.762
+WHERE trial_num=5;
+
+UPDATE trials
+SET zero_height=18, ml_per_pixel=5.525
+WHERE trial_num=6;
