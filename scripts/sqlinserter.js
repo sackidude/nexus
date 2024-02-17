@@ -5,7 +5,7 @@ const mysql = require("mysql")
 
 const con = mysql.createConnection({
     user: "root",
-    password: JSON.parse(fs.readFileSync(__dirname + "/credentials.json")).password,
+    password: JSON.parse(fs.readFileSync(__dirname + "/../secrets.json")).password,
     database: "nexus"
 })
 
@@ -19,8 +19,8 @@ con.connect(err=>{
     trials.forEach((trialNum)=>{
         const trialPath = path.join(imagesPath, "trial-" + trialNum)
         const t0 = fs.statSync(path.join(trialPath, "10.jpg")).mtime
-        /*con.query(
-            `INSERT INTO Trials (\`trial-number\`, \`directory-name\`, \`start-time\`, \`zero-height\`, \`thousand-milliliter-height\`)
+        con.query(
+            `INSERT INTO Trials (trial_num, directory, start, zero_height, 1000_ml_height)
             VALUES (
                 ${Number(trialNum)},
                 'trial-${trialNum}',
@@ -28,7 +28,7 @@ con.connect(err=>{
                 0,
                 100
             )`
-        )*/
+        )
 
         fs.readdir(trialPath, (err, files)=>{
             files.forEach(file=>{
@@ -37,7 +37,7 @@ con.connect(err=>{
                 const num = Number(file.substring(0,file.length-4))
 
                 con.query(
-                    `INSERT INTO Images (\`filename\`, trial, \`time\`)
+                    `INSERT INTO Images (filename, trial, time)
                     VALUES (
                         '${file}',
                         ${trialNum},

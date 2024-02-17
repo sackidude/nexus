@@ -5,7 +5,7 @@
         alt="upside-down measuring glass filled with water and carbon dioxide that pushes down the water."
         hx-post="/user-image-data" 
         hx-trigger="click"
-        hx-headers="js:{pxHeight: pxHeight }" {{/*TODO: make sure this is safe*/}}
+        hx-headers="js:{pxHeight: pxHeight, id: {{.id}}}" {{/*TODO: make sure this is safe*/}}
         hx-target="#image-data-display"
         hx-swap="outerHTML"
     >
