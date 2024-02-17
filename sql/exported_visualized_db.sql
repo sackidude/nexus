@@ -1,3 +1,4 @@
+-- The exact code here isn't used
 CREATE TABLE `image`(
     `image-number` INT NOT NULL,
     `trial` SMALLINT NOT NULL,
