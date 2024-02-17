@@ -40,7 +40,8 @@ func getNewImageData(db *sql.DB) map[string]string {
 		"path":  path,
 	}
 }
-func updateVolumeData(db *sql.DB, id int, volume float32) {
+
+func updateVolumeData(db *sql.DB, id int, volume float64) {
 	query := fmt.Sprintf(
 		`UPDATE Images
 		SET volume=(1/(analyzed+1))*(analyzed*volume+%g), analyzed=analyzed+1
@@ -51,6 +52,25 @@ func updateVolumeData(db *sql.DB, id int, volume float32) {
 	if err != nil {
 		log.Fatal(err)
 	}
+}
+
+func calculateVolume(db *sql.DB, trialId int64, pxHeight float64) float64 {
+	// get zero height and 1000ml height from db
+	var (
+		zero_height        int
+		thousand_ml_height int // Can't start with number :/
+	)
+	query := fmt.Sprintf("SELECT zero_height, 1000_ml_height FROM Trials WHERE trial_num=%d LIMIT 1", trialId)
+	rows, _ := db.Query(query)
+	defer rows.Close()
+	for rows.Next() {
+		err := rows.Scan(&zero_height, &thousand_ml_height)
+		if err != nil {
+			println("error reading lines")
+		}
+	}
+
+	return (pxHeight - float64(zero_height)) / float64(thousand_ml_height) * 1000
 }
 
 // This is very temporary
@@ -103,12 +123,14 @@ func main() {
 
 	// HTTP Posts
 	imageDataRetrival := func(w http.ResponseWriter, r *http.Request) {
+		trialId, _ := strconv.ParseInt(r.Header.Get("trialId"), 10, 32)
 		id, _ := strconv.ParseInt(r.Header.Get("id"), 10, 32)
 		id32 := int(id)
 		pxHeightString := r.Header.Get("pxHeight")
 		pxHeight, _ := strconv.ParseFloat(pxHeightString, 64)
-		fmt.Printf("User image data received with pxHeight: %.1f\n", pxHeight)
-		volume := float32(1000) // TODO: real volume calculation here or maybe later.
+
+		volume := calculateVolume(db, trialId, pxHeight)
+		fmt.Printf("User image data received with volume: %.1f\n", volume)
 		updateVolumeData(db, id32, volume)
 
 		imageData := getNewImageData(db)
