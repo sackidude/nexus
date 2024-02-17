@@ -18,11 +18,4 @@ CREATE TABLE Images(
     analyzed TINYINT NULL DEFAULT '0'
 );
 ALTER TABLE
-    Images ADD CONSTRAINT `image_trial_foreign` FOREIGN KEY(`trial`) REFERENCES Trials(`trial-number`);
-
--- @block
-SELECT * FROM trials WHERE TRUE LIMIT 1
-
--- @block
-UPDATE Images
-SET `times-analyzed`=`times-analyzed`+1, volume=(volume
+    Images ADD CONSTRAINT image_trial_foreign FOREIGN KEY(trial) REFERENCES Trials(trial_num);
