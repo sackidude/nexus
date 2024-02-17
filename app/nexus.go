@@ -123,7 +123,8 @@ func generateGraphJSON(db *sql.DB) template.JS {
 		var jsonStrings []string
 		t0 := datapoints[0].datetime.Unix()
 		for _, v := range datapoints {
-			hours := float64(v.datetime.Unix()-t0) / 60.0
+			secondsInHour := 3600.0
+			hours := float64(v.datetime.Unix()-t0) / secondsInHour
 			tempStr := fmt.Sprintf("{x:%.2f,y:%.1f}", hours, v.volume)
 			jsonStrings = append(jsonStrings, tempStr)
 		}
