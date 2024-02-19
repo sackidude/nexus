@@ -13,7 +13,7 @@ WHERE id=1;
 
 -- @block
 UPDATE Images
-SET volume=0, analyzed=0, last_seen=NULL
+SET volume=0, analyzed=0, request_date=NULL, state='U'
 
 -- @block
 SELECT zero_height, 1000_ml_height FROM Trials WHERE trial_num=3 LIMIT 1
@@ -49,3 +49,11 @@ WHERE trial=3
 -- @block
 ALTER TABLE Images
 RENAME COLUMN last_seen TO request_date
+
+-- @block
+ALTER TABLE Images
+ADD state CHAR(1) NOT NULL DEFAULT 'U'
+
+-- @block
+ALTER TABLE Images
+DROP COLUMN state

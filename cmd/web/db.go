@@ -29,10 +29,10 @@ func GetNewImageData(db *sql.DB) map[string]string {
 	// Update the entry in the db to reflect that someone has seen it
 	go func() {
 		formattedTime := GetSQLFormattedDateTime()
-		query := fmt.Sprintf(`UPDATE Images SET request_date='%s' WHERE id=%d;`, formattedTime, id)
+		query := fmt.Sprintf(`UPDATE Images SET request_date='%s', state='I' WHERE id=%d;`, formattedTime, id)
 		_, execError := db.Exec(query)
 		if execError != nil {
-			log.Printf("Failed to update images")
+			log.Printf("Failed to update images, error: %s", execError)
 		}
 	}()
 
@@ -51,7 +51,7 @@ func SetImageData(db *sql.DB, volume float64, id int64) {
 	formattedTime := GetSQLFormattedDateTime()
 	query := fmt.Sprintf(
 		`UPDATE Images 
-		SET volume=(1/(analyzed+1))*(analyzed*volume+%g), analyzed=analyzed+1, request_date='%s' 
+		SET volume=(1/(analyzed+1))*(analyzed*volume+%g), analyzed=analyzed+1, request_date='%s', state='D'
 		WHERE id=%d;`, volume, formattedTime, id)
 	_, err := db.Exec(query)
 	if err != nil {

@@ -16,7 +16,8 @@ CREATE TABLE Images(
     time DATETIME NOT NULL,
     volume FLOAT NOT NULL DEFAULT '0',
     analyzed TINYINT NULL DEFAULT '0',
-    last_seen DATETIME NULL
+    request_date DATETIME NULL
+    state CHAR(1) NOT NULL DEFAULT 'U' -- U=Unlabeled I=In progress D=Done
 );
 ALTER TABLE
     Images ADD CONSTRAINT image_trial_foreign FOREIGN KEY(trial) REFERENCES Trials(trial_num);
