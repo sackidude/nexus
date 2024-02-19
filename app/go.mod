@@ -1,4 +1,4 @@
-module nexus/app
+module github.com/sackidude/nexus
 
 go 1.21.7
 
