@@ -1,6 +1,6 @@
 <div>
-    <script>
-        const trial3 = {{ . }};
+    <script hx-get="/update-data" hx-trigger="every 1s" hx-swap="innerHTML">
+        updateData({{ . }})
     </script>
     <script src="viewer.js"></script>
     <p>Graphs</p>

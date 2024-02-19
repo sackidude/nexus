@@ -1,4 +1,9 @@
+let trial3 = []
 const ctx = document.getElementById("mainCanvas")
+
+const updateData = (setData)=>{
+    trial3 = setData
+}
 
 const data = {
     datasets: [{
