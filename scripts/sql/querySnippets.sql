@@ -45,3 +45,7 @@ SELECT trial_num FROM Trials
 -- @block
 SELECT time, volume FROM Images
 WHERE trial=3
+
+-- @block
+ALTER TABLE Images
+RENAME COLUMN last_seen TO request_date

@@ -39,11 +39,15 @@ func main() {
 
 	// HTMX
 	// HTTP GET handling
-	http.HandleFunc("/image-request", ImageRequest)
+	http.HandleFunc("/image-request", func(w http.ResponseWriter, r *http.Request) {
+		ImageRequest(w, r, db)
+	})
 	http.HandleFunc("/data-view", DataViewer)
 
 	// HTTP POST handling
-	http.HandleFunc("/user-image-data", ImageDataRetrieval)
+	http.HandleFunc("/user-image-data", func(w http.ResponseWriter, r *http.Request) {
+		ImageDataRetrieval(w, r, db)
+	})
 
 	listeningErr := http.ListenAndServe("localhost:8080", nil)
 	if listeningErr != nil {
