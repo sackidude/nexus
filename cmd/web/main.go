@@ -1,10 +1,13 @@
 package main
 
 import (
+	"database/sql"
+	"fmt"
 	"log"
 	"net/http"
 	"os"
 
+	_ "github.com/go-sql-driver/mysql"
 	"github.com/joho/godotenv"
 )
 
@@ -22,11 +25,25 @@ func main() {
 		Password string
 	}{os.Getenv("SQL_USERNAME"), os.Getenv("SQL_PASSWORD")}
 
-	log.Printf("Login details:\n\tUsername: %s \n\tPassword: %s", DBCredentials.Username, DBCredentials.Password)
+	// Connect to db
+	db, dataBaseErr := sql.Open("mysql", fmt.Sprintf("%s:%s@tcp(localhost:3306)/nexus", DBCredentials.Username, DBCredentials.Password))
+	if dataBaseErr != nil {
+		log.Fatalf("Error while connecting to database\n\t\terror: %s", dataBaseErr)
+	}
+	defer db.Close()
+	log.Println("Successfully connected to database")
 
 	// Static file hosting.
 	fs := http.FileServer(http.Dir("static"))
 	http.Handle("/", fs)
+
+	// HTMX
+	// HTTP GET handling
+	http.HandleFunc("/image-request", ImageRequest)
+	http.HandleFunc("/data-view", DataViewer)
+
+	// HTTP POST handling
+	http.HandleFunc("/user-image-data", ImageDataRetrieval)
 
 	listeningErr := http.ListenAndServe("localhost:8080", nil)
 	if listeningErr != nil {
