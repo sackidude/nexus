@@ -1,8 +1,18 @@
-__debug*
-*.bak
+# Contains passwords and login information
+.env
+
+# Ignore stupid vscode things
 .vscode
+
+# This file is created by go during runtime
+__debug*
+
+# Useful for backing up a file for debugging
+*.bak
+
+# This is for the scripts/node
 node_modules
 package-lock.json
-credentials.json
-secrets.json
+
+# All the pictures shouldn't be on the git repo, instead just the zipped versions
 trial-*/*.jpg
