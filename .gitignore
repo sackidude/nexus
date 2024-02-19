@@ -5,7 +5,7 @@
 .vscode
 
 # This file is created by go during runtime
-__debug*
+__debug_bin*.exe
 
 # Useful for backing up a file for debugging
 *.bak
