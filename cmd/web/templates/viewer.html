@@ -1,8 +1,6 @@
+<script src="scripts/viewer.js"></script>
 <div>
-    <script hx-get="/update-data" hx-trigger="every 1s" hx-swap="innerHTML">
-        updateData({{ . }})
-    </script>
-    <script src="viewer.js"></script>
+    <script>setData({{ . }})</script>
     <p>Graphs</p>
     <div style="width:400px; height:400px;">
         <canvas id="mainCanvas" aria-label="Graph showing the results" role="img">

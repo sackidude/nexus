@@ -4,7 +4,10 @@ import (
 	"database/sql"
 	"errors"
 	"fmt"
+	"html/template"
 	"log"
+	"strings"
+	"time"
 )
 
 func GetNewImageData(db *sql.DB) map[string]string {
@@ -100,4 +103,95 @@ func GetTrialPxInformation(db *sql.DB, imageId int64) (zeroheight int64, ml_per_
 	}
 
 	return zeroheight, ml_per_pixel, nil
+}
+
+// TODO: add better error handling to this function
+func GetChartData(db *sql.DB) template.JS {
+	// Get all the trials
+	var trials []int
+	trialRows, trialError := db.Query("SELECT trial_num FROM Trials")
+	if trialError != nil {
+		log.Printf("Failed to query trial error:%s", trialError)
+		return "" // TODO: maybe change this?
+	}
+	for trialRows.Next() {
+		var temp int
+		err := trialRows.Scan(&temp)
+		if err != nil {
+			log.Printf("Error during scan of trials, error: %s", err)
+			return ""
+		}
+		trials = append(trials, temp)
+	}
+	trialRows.Close()
+
+	type datapoint struct {
+		timePoint time.Time
+		volume    float64
+		state     string
+	}
+
+	trialData := make(map[int][]datapoint)
+
+	imageRows, imageError := db.Query("SELECT trial, time, volume, state FROM Images")
+	if imageError != nil {
+		log.Printf("Failed to query images, error: %s", imageError)
+		return ""
+	}
+	for imageRows.Next() {
+		var trial int
+		var timestring string
+		var dp datapoint
+		err := imageRows.Scan(&trial, &timestring, &dp.volume, &dp.state)
+		if err != nil {
+			log.Printf("Failed to scan row, error: %s", err)
+			return ""
+		}
+		var timeParseErr error
+		dp.timePoint, timeParseErr = SQLTimestampToDatetime(timestring)
+		if timeParseErr != nil {
+			log.Printf("Failed to parse time")
+			return ""
+		}
+		_, ok := trialData[trial]
+		if !ok {
+			trialData[trial] = []datapoint{dp}
+		} else {
+			trialData[trial] = append(trialData[trial], dp)
+		}
+	}
+
+	// x = hour y = volume
+	//[{x:1, y:2}, {x:2, y:3}]
+	var sb strings.Builder
+	_, err := sb.WriteString("[")
+	if err != nil {
+		log.Printf("Failed to push to string builder, error: %s", err)
+		return ""
+	}
+
+	for trial_num, dpArr := range trialData {
+		if trial_num == 3 {
+			t0 := trialData[trial_num][0].timePoint
+			for i, dp := range dpArr {
+				// Timestamp to hours after t0
+				secondsInHour := 3600.0
+				hour := dp.timePoint.Sub(t0).Seconds() / secondsInHour
+				var comma string
+				if i != 0 {
+					comma = ","
+				} else {
+					comma = ""
+				}
+				_, writeStrErr := sb.WriteString(fmt.Sprintf("%s{x:%.3f,y:%.3f}", comma, hour, dp.volume))
+				if writeStrErr != nil {
+					log.Printf("Failed to push to string builder, error: %s", err)
+					return ""
+				}
+			}
+		}
+
+	}
+	sb.WriteString("]")
+	return template.JS(sb.String())
 }

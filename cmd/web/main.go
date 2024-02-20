@@ -42,7 +42,9 @@ func main() {
 	http.HandleFunc("/image-request", func(w http.ResponseWriter, r *http.Request) {
 		ImageRequest(w, r, db)
 	})
-	http.HandleFunc("/data-view", DataViewer)
+	http.HandleFunc("/viewer", func(w http.ResponseWriter, r *http.Request) {
+		DataViewer(w, r, db)
+	})
 
 	// HTTP POST handling
 	http.HandleFunc("/user-image-data", func(w http.ResponseWriter, r *http.Request) {

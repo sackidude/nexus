@@ -57,3 +57,6 @@ ADD state CHAR(1) NOT NULL DEFAULT 'U'
 -- @block
 ALTER TABLE Images
 DROP COLUMN state
+
+-- @block
+SELECT trial, time, volume, state FROM Images

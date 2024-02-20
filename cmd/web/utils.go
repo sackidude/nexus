@@ -13,6 +13,11 @@ func GetSQLFormattedDateTime() string {
 	return time.Now().Format("2006-01-02 15:04:05")
 }
 
+func SQLTimestampToDatetime(timeStr string) (time.Time, error) {
+	layout := "2006-01-02 15:04:05"
+	return time.Parse(layout, timeStr)
+}
+
 func CalculateVolume(db *sql.DB, pxHeight float64, imageId int64) (float64, error) {
 	zeroheight, ml_per_pixel, err := GetTrialPxInformation(db, imageId)
 	if err != nil {
