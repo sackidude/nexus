@@ -14,11 +14,31 @@
 </head>
 
 <body>
-    <h1>Main</h1>
-    <div id="option-holder">
-        <button hx-get="/image-request" hx-trigger="click" hx-swap="outerHTML" hx-target="#option-holder">Request
+    <div class="wrapper">
+
+    <header>
+    <img src="web-imgs/logo.svg" alt="logo" width="100">
+    <nav>
+        <ul class="nav-options">
+            <li><button hx-get="/start-page" hx-target="main">Start page</button></li>
+            <li><button hx-get="/image-request" hx-target="main">Classification</button></li>
+            <li><button hx-get="/viewer" hx-target="main">Data viewer</button></li>
+        </ul>
+    </nav>
+    </header>
+
+    <main>
+        <h1>Yeast analysis</h1>
+        <div class="btn-container">
+        <button hx-get="/image-request" hx-target="main">Request
             image</button>
-        <button hx-get="/viewer" hx-trigger="click" hx-swap="outerHTML" hx-target="#option-holder">View data</button>
+        <button hx-get="/viewer" hx-target="main">View data</button>
+        </div>
+    </main>
+    
+    <footer>
+        © Nils 2024. All rights reserved.
+    </footer>
     </div>
 </body>
 
