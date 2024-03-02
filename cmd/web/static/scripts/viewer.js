@@ -1,10 +1,6 @@
-const ctx = document.getElementById("mainCanvas")
+var ctx = document.getElementById("mainCanvas")
 
-const updateData = (setData)=>{
-    trial3 = setData
-}
-
-const data = {
+var data = {
     datasets: [{
         label: 'trial-3',
         data: trial3,

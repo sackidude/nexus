@@ -5,10 +5,14 @@ function setData (data){
     trial3 = data
 }
 
-document.onload = (e) => {
+window.onload = (e) => {
     document.addEventListener("mousemove", (e) => {
         let rect = e.target.getBoundingClientRect();
         pxHeight = e.clientY - rect.top;
     });
 }
 
+
+const updateData = (setData)=>{
+    trial3 = setData
+}
