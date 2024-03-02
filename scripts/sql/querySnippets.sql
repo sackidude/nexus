@@ -11,7 +11,7 @@ UPDATE Images
 SET volume=(1/(analyzed+1))*(analyzed*volume+100), analyzed=analyzed+1
 WHERE id=1;
 
--- @block
+-- @block RESET
 UPDATE Images
 SET volume=0, analyzed=0, request_date=NULL, state='U'
 
@@ -59,4 +59,4 @@ ALTER TABLE Images
 DROP COLUMN state
 
 -- @block
-SELECT trial, time, volume, state FROM Images
+SELECT * FROM Images WHERE trial="4"
