@@ -181,3 +181,19 @@ func GetChartData(db *sql.DB) template.JS {
 	}
 	return template.JS(string(resultByte))
 }
+
+func GetDBInfo(db *sql.DB) int {
+	rows, err := db.Query("SELECT COUNT(*) FROM Images")
+	if err != nil {
+		log.Printf("Failed to get database infomation, error: %s", err)
+	}
+	defer rows.Close()
+	var entries int
+	for rows.Next() {
+		err = rows.Scan(&entries)
+		if err != nil {
+			log.Printf("Failed to scan rows, error: %s", err)
+		}
+	}
+	return entries
+}

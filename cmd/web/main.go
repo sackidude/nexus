@@ -45,7 +45,9 @@ func main() {
 	http.HandleFunc("/viewer", func(w http.ResponseWriter, r *http.Request) {
 		DataViewer(w, r, db)
 	})
-	http.HandleFunc("/start-page", StartPage)
+	http.HandleFunc("/start-page", func(w http.ResponseWriter, r *http.Request) {
+		StartPage(w, r, db)
+	})
 
 	// HTTP POST handling
 	http.HandleFunc("/user-image-data", func(w http.ResponseWriter, r *http.Request) {

@@ -33,14 +33,15 @@ func DataViewer(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 }
 
 // HTTP GET
-func StartPage(w http.ResponseWriter, r *http.Request) {
+func StartPage(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 	tmpl, templateError := template.ParseFiles("templates/startpage.html")
 	if templateError != nil {
 		log.Printf("Failed toparse template in StartPage error: %s", templateError)
 		fmt.Fprintf(w, "An unexpected error has occured. Please try again.")
 		return
 	}
-	tmpl.Execute(w, "dummy")
+	databaseInfo := GetDBInfo(db)
+	tmpl.Execute(w, databaseInfo)
 }
 
 // HTTP POST
