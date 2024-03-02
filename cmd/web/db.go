@@ -123,7 +123,10 @@ func GetChartData(db *sql.DB) template.JS {
 		}
 		trials = append(trials, temp)
 	}
-	trialRows.Close()
+	closeErr := trialRows.Close()
+	if closeErr != nil {
+		log.Printf("Failed to close query error: %s", closeErr)
+	}
 
 	type datapoint struct {
 		timePoint time.Time
@@ -159,6 +162,10 @@ func GetChartData(db *sql.DB) template.JS {
 		} else {
 			trialData[trial] = append(trialData[trial], dp)
 		}
+	}
+	closeErr2 := imageRows.Close()
+	if closeErr2 != nil {
+		log.Printf("Failed to close query error: %s", closeErr2)
 	}
 
 	// x = hour y = volume
