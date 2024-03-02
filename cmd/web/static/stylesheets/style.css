@@ -3,12 +3,12 @@
 *::before {
     box-sizing: border-box;
     margin: 0;
-    font-family: sans-serif;
 }
 
 
 body {
     margin: 1em;
+    font-family: sans-serif;
 }
 
 .wrapper {
@@ -20,12 +20,12 @@ body {
 }
 
 header {
-    display: grid;
-    grid-template-columns: 1fr 1fr 2fr;
+    display: flex;
+    justify-content: space-between;
 }
 
 nav {
-    grid-column: 3 / -1;
+    grid-column: 2 / -1;
 }
 
 .nav-options {
@@ -36,9 +36,9 @@ nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    & li {
+    > li {
         float: left;
-        & a {
+        > a {
             margin: auto;
         }
     }
@@ -60,11 +60,11 @@ main {
     margin: 1em 0em;
     display: flex;
 
-    & button {
+    > button {
         width: calc(50vw - 2em);
         height: 100%;
 
-        background-image: url("../images/trial-3/1.jpg");
-        background-size: cover;
+/*         background-image: url("../images/trial-3/1.jpg");
+        background-size: cover; */
     }
 }
