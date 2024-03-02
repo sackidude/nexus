@@ -31,6 +31,17 @@ func DataViewer(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 	tmpl.Execute(w, GetChartData(db))
 }
 
+// HTTP GET
+func StartPage(w http.ResponseWriter, r *http.Request) {
+	tmpl, templateError := template.ParseFiles("templates/startpage.html")
+	if templateError != nil {
+		log.Printf("Failed toparse template in StartPage error: %s", templateError)
+		fmt.Fprintf(w, "An unexpected error has occured. Please try again.")
+		return
+	}
+	tmpl.Execute(w, "dummy")
+}
+
 // HTTP POST
 func ImageDataRetrieval(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 	// Make the query to db

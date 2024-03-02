@@ -27,13 +27,7 @@
     </nav>
     </header>
 
-    <main>
-        <h1>Yeast analysis</h1>
-        <div class="btn-container">
-        <button hx-get="/image-request" hx-target="main">Request
-            image</button>
-        <button hx-get="/viewer" hx-target="main">View data</button>
-        </div>
+    <main hx-get="/start-page" hx-trigger="load">
     </main>
     
     <footer>
