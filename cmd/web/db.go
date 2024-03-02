@@ -2,11 +2,11 @@ package main
 
 import (
 	"database/sql"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"html/template"
 	"log"
-	"strings"
 	"time"
 )
 
@@ -105,100 +105,79 @@ func GetTrialPxInformation(db *sql.DB, imageId int64) (zeroheight int64, ml_per_
 	return zeroheight, ml_per_pixel, nil
 }
 
+type Trial struct {
+	Done       []Point `json:"done"`
+	InProgress []Point `json:"inProgress"`
+	Unlabeled  []Point `json:"unlabeled"`
+}
+
+type Point struct {
+	X float32 `json:"x"`
+	Y float32 `json:"y"`
+}
+
 // TODO: add better error handling to this function
 func GetChartData(db *sql.DB) template.JS {
-	// Get all the trials
-	var trials []int
-	trialRows, trialError := db.Query("SELECT trial_num FROM Trials")
-	if trialError != nil {
-		log.Printf("Failed to query trial error:%s", trialError)
-		return "" // TODO: maybe change this?
-	}
-	for trialRows.Next() {
-		var temp int
-		err := trialRows.Scan(&temp)
-		if err != nil {
-			log.Printf("Error during scan of trials, error: %s", err)
-			return ""
-		}
-		trials = append(trials, temp)
-	}
-	closeErr := trialRows.Close()
-	if closeErr != nil {
-		log.Printf("Failed to close query error: %s", closeErr)
-	}
+	data := make(map[int]Trial)
 
-	type datapoint struct {
-		timePoint time.Time
-		volume    float64
-		state     string
-	}
-
-	trialData := make(map[int][]datapoint)
-
-	imageRows, imageError := db.Query("SELECT trial, time, volume, state FROM Images")
+	imageRows, imageError := db.Query("SELECT trial, time, volume, state, filename FROM Images")
 	if imageError != nil {
 		log.Printf("Failed to query images, error: %s", imageError)
 		return ""
 	}
+	var t0 time.Time
 	for imageRows.Next() {
-		var trial int
+		var trialNum int
 		var timestring string
-		var dp datapoint
-		err := imageRows.Scan(&trial, &timestring, &dp.volume, &dp.state)
+		var volume float32
+		var state string
+		var filename string
+		err := imageRows.Scan(&trialNum, &timestring, &volume, &state, &filename)
 		if err != nil {
 			log.Printf("Failed to scan row, error: %s", err)
 			return ""
 		}
-		var timeParseErr error
-		dp.timePoint, timeParseErr = SQLTimestampToDatetime(timestring)
+		timePoint, timeParseErr := SQLTimestampToDatetime(timestring)
 		if timeParseErr != nil {
 			log.Printf("Failed to parse time")
 			return ""
 		}
-		_, ok := trialData[trial]
-		if !ok {
-			trialData[trial] = []datapoint{dp}
-		} else {
-			trialData[trial] = append(trialData[trial], dp)
+		// Generate the point
+		// Just trust that this has run hehe...
+		if filename == "1.jpg" {
+			t0 = timePoint
 		}
+		const secondsInHour = 3600.0
+		t := float32(timePoint.Sub(t0).Seconds() / secondsInHour)
+		point := Point{X: t, Y: volume}
+
+		trial, ok := data[trialNum]
+		if !ok {
+			data[trialNum] = Trial{}
+		}
+
+		switch state {
+		case "D":
+			trial.Done = append(trial.Done, point)
+		case "I":
+			trial.InProgress = append(trial.InProgress, point)
+		case "U":
+			trial.Unlabeled = append(trial.Unlabeled, point)
+		default:
+			log.Printf("Invalid state in GetChartData")
+		}
+		data[trialNum] = trial
 	}
 	closeErr2 := imageRows.Close()
 	if closeErr2 != nil {
 		log.Printf("Failed to close query error: %s", closeErr2)
 	}
 
-	// x = hour y = volume
-	//[{x:1, y:2}, {x:2, y:3}]
-	var sb strings.Builder
-	_, err := sb.WriteString("[")
-	if err != nil {
-		log.Printf("Failed to push to string builder, error: %s", err)
-		return ""
+	// The returned data should be in the following format
+	resultByte, jsonMarshalErr := json.Marshal(data)
+	if jsonMarshalErr != nil {
+		log.Printf("Failed to marshal item, error: %s", jsonMarshalErr)
+		return template.JS("")
 	}
-
-	for trial_num, dpArr := range trialData {
-		if trial_num == 3 {
-			t0 := trialData[trial_num][0].timePoint
-			for i, dp := range dpArr {
-				// Timestamp to hours after t0
-				secondsInHour := 3600.0
-				hour := dp.timePoint.Sub(t0).Seconds() / secondsInHour
-				var comma string
-				if i != 0 {
-					comma = ","
-				} else {
-					comma = ""
-				}
-				_, writeStrErr := sb.WriteString(fmt.Sprintf("%s{x:%.3f,y:%.3f}", comma, hour, dp.volume))
-				if writeStrErr != nil {
-					log.Printf("Failed to push to string builder, error: %s", err)
-					return ""
-				}
-			}
-		}
-
-	}
-	sb.WriteString("]")
-	return template.JS(sb.String())
+	return template.JS(string(resultByte))
 }

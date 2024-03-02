@@ -1,7 +1,7 @@
 <script src="scripts/viewer.js"></script>
-<div>
-    <script>setData({{ . }})</script>
-    <p>Graphs</p>
+<div hx-get="/viewer" hx-target="main" hx-trigger="every 10s">
+    <script>data = {{ . }}</script>
+    <h2>Trial 3</h2>
     <div style="width:400px; height:400px;">
         <canvas id="mainCanvas" aria-label="Graph showing the results" role="img">
             <p>Data should be displayed here :/</p>

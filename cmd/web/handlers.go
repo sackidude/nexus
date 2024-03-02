@@ -28,7 +28,8 @@ func DataViewer(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 		fmt.Fprint(w, "An unexpected error has occured. Please try again.")
 		return
 	}
-	tmpl.Execute(w, GetChartData(db))
+	formattingData := GetChartData(db)
+	tmpl.Execute(w, formattingData)
 }
 
 // HTTP GET
