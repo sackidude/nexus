@@ -197,3 +197,28 @@ func GetDBInfo(db *sql.DB) int {
 	}
 	return entries
 }
+
+type viewerTemplate struct {
+	Data       template.JS
+	Trial_info []int
+}
+
+func GetTrialTemplate(db *sql.DB) (viewerTemplate, error) {
+	rows, err := db.Query("SELECT trial_num FROM Trials")
+	if err != nil {
+		return viewerTemplate{}, err
+	}
+	var res viewerTemplate
+	for rows.Next() {
+		var temp int
+		err = rows.Scan(&temp)
+		if err != nil {
+			log.Printf("Failed to scan row, error. %s", err)
+		}
+		res.Trial_info = append(res.Trial_info, temp)
+	}
+
+	res.Data = GetChartData(db)
+
+	return res, nil
+}

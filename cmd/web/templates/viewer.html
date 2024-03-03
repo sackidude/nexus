@@ -1,10 +1,17 @@
 <script src="scripts/viewer.js"></script>
-<div hx-get="/viewer" hx-target="main" hx-trigger="every 10s">
-    <script>data = {{ . }}</script>
-    <h2>Trial 3</h2>
-    <div style="width:400px; height:400px;">
-        <canvas id="mainCanvas" aria-label="Graph showing the results" role="img">
-            <p>Data should be displayed here :/</p>
-        </canvas>
+<div class="boxwrapper">
+    {{ range .Trial_info }}
+    <div class="trial">
+        <h2>Trial {{ . }}</h2>
+        <div style="width:400px; height:400px;">
+            <canvas id="canvas-{{.}}" aria-label="Graph showing the results" role="img">
+                <p>Data should be displayed here :/</p>
+            </canvas>
+        </div>
     </div>
+    {{ end }}
 </div>
+
+<script>
+    data = {{.Data}}
+</script>

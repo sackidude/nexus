@@ -28,8 +28,13 @@ func DataViewer(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 		fmt.Fprint(w, "An unexpected error has occured. Please try again.")
 		return
 	}
-	formattingData := GetChartData(db)
-	tmpl.Execute(w, formattingData)
+	templateData, err := GetTrialTemplate(db)
+	if err != nil {
+		log.Printf("Failed to get trial template data: %s", err)
+		fmt.Fprintf(w, "An unexpected error has occured. Please try again.")
+		return
+	}
+	tmpl.Execute(w, templateData)
 }
 
 // HTTP GET

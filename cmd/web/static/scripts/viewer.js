@@ -1,30 +1,38 @@
-var ctx = document.getElementById("mainCanvas")
+var ctx = document.getElementById("mainCanvas");
 
-var data = {
-    datasets: [{
-        label: 'Done',
-        data: data[3].done,
-        backgroundColor: '#71bd42'
-    }, {
-        label: 'In Progress',
-        data: data[3].inProgress,
-        backgroundColor: '#e05f19'
-    }, {
-        label: 'Unlabeled',
-        data: data[3].unlabeled,
-        backgroundColor: "#382911"
-    }]
-};
+for (const trial_num in data) {
+  const trial_data = data[trial_num];
+  var ctx = document.getElementById("canvas-" + trial_num);
 
-new Chart(ctx, {
-    type: 'scatter',
-    data: data,
+  const chartData = {
+    datasets: [
+      {
+        label: "Done",
+        data: trial_data.done,
+        backgroundColor: "#71bd42",
+      },
+      {
+        label: "In Progress",
+        data: trial_data.inProgress,
+        backgroundColor: "#e05f19",
+      },
+      {
+        label: "Unlabeled",
+        data: trial_data.unlabeled,
+        backgroundColor: "#382911",
+      },
+    ],
+  };
+  new Chart(ctx, {
+    type: "scatter",
+    data: chartData,
     options: {
-        scales: {
-            x: {
-                type: "linear",
-                position: "bottom"
-            }
-        }
-    }
-});
+      scales: {
+        x: {
+          type: "linear",
+          position: "bottom",
+        },
+      },
+    },
+  });
+}
