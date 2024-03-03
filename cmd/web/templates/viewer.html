@@ -1,13 +1,11 @@
 <script src="scripts/viewer.js"></script>
-<div class="boxwrapper">
+<div class="trial-chart-wrapper">
     {{ range .Trial_info }}
     <div class="trial">
         <h2>Trial {{ . }}</h2>
-        <div style="width:400px; height:400px;">
-            <canvas id="canvas-{{.}}" aria-label="Graph showing the results" role="img">
-                <p>Data should be displayed here :/</p>
-            </canvas>
-        </div>
+        <canvas id="canvas-{{.}}" aria-label="Graph showing the results" role="img">
+            <p>Data should be displayed here :/</p>
+        </canvas>
     </div>
     {{ end }}
 </div>
