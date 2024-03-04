@@ -17,7 +17,7 @@ func GetNewImageData(db *sql.DB) map[string]string {
 		filename    string
 		pictureTime string
 	)
-	rows, sqlError := db.Query("SELECT id, trial, filename, time FROM images ORDER BY request_date ASC LIMIT 1")
+	rows, sqlError := db.Query("SELECT id, trial, filename, time FROM images ORDER BY request_date ASC, id ASC LIMIT 1")
 	if sqlError != nil {
 		log.Printf("Error while querying data base in GetNewImageData\n\t\t%s", sqlError)
 	}
