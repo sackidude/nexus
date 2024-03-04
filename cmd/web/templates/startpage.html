@@ -1,6 +1,8 @@
-<h1>Yeast analysis</h1>
-<p>Database entries: {{ . }}</p>
-<div class="btn-container">
+<div class="wrapper wrapper-start">
+  <h1>Yeast analysis</h1>
+  <p>Database entries: <span>{{ . }}</span></p>
+  <div class="btn-container">
     <button hx-get="/image-request" hx-target="main">Classification</button>
     <button hx-get="/viewer" hx-target="main">Data viewer</button>
+  </div>
 </div>

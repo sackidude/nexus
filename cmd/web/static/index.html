@@ -1,39 +1,57 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://unpkg.com/htmx.org@1.9.10" integrity="sha384-D1Kt99CQMDuVetoL1lrYwg5t+9QdHe7NLX/SoJYkXDFfX37iInKRy5xLSi8nO7UC" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"
-        integrity="sha512-ZwR1/gSZM3ai6vCdI+LVF1zSq/5HznD3ZSTk7kajkaj4D292NLuduDCO1c/NT8Id+jE58KYLKT7hXnbtryGmMg=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <link rel="stylesheet" href="stylesheets/style.css">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- HTMX -->
+    <script
+      src="https://unpkg.com/htmx.org@1.9.10"
+      integrity="sha384-D1Kt99CQMDuVetoL1lrYwg5t+9QdHe7NLX/SoJYkXDFfX37iInKRy5xLSi8nO7UC"
+      crossorigin="anonymous"
+    ></script>
+    <!-- Chart.js -->
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"
+      integrity="sha512-ZwR1/gSZM3ai6vCdI+LVF1zSq/5HznD3ZSTk7kajkaj4D292NLuduDCO1c/NT8Id+jE58KYLKT7hXnbtryGmMg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Own files -->
+    <link rel="stylesheet" href="stylesheets/style.css" />
     <script src="scripts/main.js"></script>
+
     <title>Nexus</title>
-</head>
+  </head>
 
-<body>
-    <div class="wrapper">
-
+  <body class="noto-sans-400">
     <header>
-    <img src="web-imgs/logo.svg" alt="logo" width="100">
-    <nav>
-        <ul class="nav-options">
-            <li><button hx-get="/start-page" hx-target="main">Start page</button></li>
-            <li><button hx-get="/image-request" hx-target="main">Classification</button></li>
-            <li><button hx-get="/viewer" hx-target="main">Data viewer</button></li>
+      <img src="web-imgs/logo.svg" alt="Yeast analysis logo" />
+      <nav>
+        <ul>
+          <li>
+            <a hx-get="/start-page" hx-target="main" tabindex="0">Start page</a>
+          </li>
+          <li>
+            <a hx-get="/image-request" hx-target="main" tabindex="0">
+              Classification
+            </a>
+          </li>
+          <li>
+            <a hx-get="/viewer" hx-target="main" tabindex="0">Data viewer</a>
+          </li>
         </ul>
-    </nav>
+      </nav>
     </header>
 
-    <main hx-get="/start-page" hx-trigger="load">
-    </main>
-    
-    <footer>
-        © Nils 2024. All rights reserved.
-    </footer>
-    </div>
-</body>
+    <main hx-get="/start-page" hx-trigger="load"></main>
 
+    <footer><p>© Nils 2024. All rights reserved.</p></footer>
+  </body>
 </html>
