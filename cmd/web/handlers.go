@@ -10,27 +10,35 @@ import (
 
 // HTTP GET
 func ImageRequest(w http.ResponseWriter, r *http.Request, db *sql.DB) {
-	tmpl, templateError := template.ParseFiles("templates/fetcher.html")
-	if templateError != nil {
-		log.Printf("Failed to parse template in handlers.go ImageRequest,\n\t\terror: %s", templateError)
-		fmt.Fprint(w, "And unexpected error has occured. Please try again.")
+	tmpl, err := template.ParseFiles("templates/fetcher.html")
+	if err != nil {
+		log.Printf("ImageRequest: template.ParseFiles: %s", err)
+		fmt.Fprint(w, "An unexpected error has occured. Please try again.")
 		return
 	}
 
-	tmpl.Execute(w, GetNewImageData(db))
+	imageData, err := GetNewImageData(db)
+
+	if err != nil {
+		log.Printf("ImageRequest: GetNewImageData: %s", err)
+		fmt.Fprintf(w, "An unexpected error has occured. Please try again.")
+		return
+	}
+
+	tmpl.Execute(w, imageData)
 }
 
 // HTTP GET
 func DataViewer(w http.ResponseWriter, r *http.Request, db *sql.DB) {
-	tmpl, templateError := template.ParseFiles("templates/viewer.html")
-	if templateError != nil {
-		log.Printf("Failed to parse template in DataViewer. error: %s", templateError)
+	tmpl, err := template.ParseFiles("templates/viewer.html")
+	if err != nil {
+		log.Printf("DataViewer: template.ParseFiles: %s", err)
 		fmt.Fprint(w, "An unexpected error has occured. Please try again.")
 		return
 	}
 	templateData, err := GetTrialTemplate(db)
 	if err != nil {
-		log.Printf("Failed to get trial template data: %s", err)
+		log.Printf("DataViewer: GetTrialTemplate: %s", err)
 		fmt.Fprintf(w, "An unexpected error has occured. Please try again.")
 		return
 	}
@@ -39,27 +47,34 @@ func DataViewer(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 
 // HTTP GET
 func StartPage(w http.ResponseWriter, r *http.Request, db *sql.DB) {
-	tmpl, templateError := template.ParseFiles("templates/startpage.html")
-	if templateError != nil {
-		log.Printf("Failed toparse template in StartPage error: %s", templateError)
+	tmpl, err := template.ParseFiles("templates/startpage.html")
+	if err != nil {
+		log.Printf("StartPage: template.ParseFiles: %s", err)
 		fmt.Fprintf(w, "An unexpected error has occured. Please try again.")
 		return
 	}
-	databaseInfo := GetDBInfo(db)
+	databaseInfo, err := GetDBInfo(db)
+	if err != nil {
+		log.Printf("StartPage: GetDBInfo: %s", err)
+		fmt.Fprintf(w, "An unexpected error has occured. Please try again")
+		return
+	}
 	tmpl.Execute(w, databaseInfo)
 }
 
 // HTTP POST
 func ImageDataRetrieval(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 	// Make the query to db
-	id, pxHeight, headerError := ExtractInformation(r)
-	if headerError != nil {
-		log.Printf("Failed to extract information from header in ImageDataRetrieval, error: %s", headerError)
+	id, pxHeight, err := ExtractInformation(r)
+	if err != nil {
+		log.Printf("ImageDataRetrieval: ExtractInformation: %s", err)
+		fmt.Fprintf(w, "An unexpected error has occured. Please try again")
 		return
 	}
-	volume, volumeCalcError := CalculateVolume(db, pxHeight, id)
-	if volumeCalcError != nil {
-		log.Printf("Failed to calculater volume, error: %s", volumeCalcError)
+	volume, err := CalculateVolume(db, pxHeight, id)
+	if err != nil {
+		log.Printf("ImageDataRetrieval: CalculateVolume: %s", err)
+		fmt.Fprintf(w, "An unexpected error has occured. Please try again")
 		return
 	}
 	go SetImageData(db, volume, id)
