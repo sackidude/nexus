@@ -1,4 +1,4 @@
-<div class="wrapper wrapper-fetcher">
+<div class="wrapper wrapper-fetcher" id="wrapper-fetcher">
   <section class="fetcher">
     <div class="image-information">
       <p>Trial: <span>{{.trial}}</span></p>
@@ -10,7 +10,7 @@
       glass filled with water and carbon dioxide that pushes down the water."
       hx-post="/user-image-data" hx-trigger="click" hx-headers="js:{pxHeight:
       pxHeight, id: {{.id}}}" {{/*TODO: make sure this is safe*/}}
-      hx-target=".wrapper-fetcher" hx-swap="outerHTML" >
+      hx-target="#wrapper-fetcher" hx-swap="outerHTML" >
       <div id="line"></div>
     </div>
   </section>
