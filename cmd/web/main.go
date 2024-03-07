@@ -15,9 +15,9 @@ func main() {
 	log.Println("Started!")
 
 	// Dotenv loading and getting of credentials.
-	envloadingerr := godotenv.Load("../../config/.env")
-	if envloadingerr != nil {
-		log.Fatalf("Error loading .env file\n\t\t error: %s", envloadingerr)
+	err := godotenv.Load("../../config/.env")
+	if err != nil {
+		log.Fatalf("main: godotenv.Load: %s", err)
 	}
 
 	DBCredentials := struct {
@@ -26,11 +26,10 @@ func main() {
 	}{os.Getenv("SQL_USERNAME"), os.Getenv("SQL_PASSWORD")}
 
 	// Connect to db
-	db, dataBaseErr := sql.Open("mysql", fmt.Sprintf("%s:%s@tcp(localhost:3306)/nexus", DBCredentials.Username, DBCredentials.Password))
-	if dataBaseErr != nil {
-		log.Fatalf("Error while connecting to database\n\t\terror: %s", dataBaseErr)
+	db, err := sql.Open("mysql", fmt.Sprintf("%s:%s@tcp(localhost:3306)/nexus", DBCredentials.Username, DBCredentials.Password))
+	if err != nil {
+		log.Fatalf("main: sql.Open: %s", err)
 	}
-	defer db.Close()
 	log.Println("Successfully connected to database")
 
 	// Static file hosting.
@@ -54,8 +53,8 @@ func main() {
 		ImageDataRetrieval(w, r, db)
 	})
 
-	listeningErr := http.ListenAndServe("localhost:8080", nil)
-	if listeningErr != nil {
-		log.Printf("Error in serving and listening:\n\t\terror: %s", listeningErr)
+	err = http.ListenAndServe("localhost:8080", nil)
+	if err != nil {
+		log.Printf("main: http.ListenAndServe: %s", err)
 	}
 }

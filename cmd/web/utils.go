@@ -2,8 +2,7 @@ package main
 
 import (
 	"database/sql"
-	"errors"
-	"log"
+	"fmt"
 	"net/http"
 	"strconv"
 	"time"
@@ -15,31 +14,30 @@ func GetSQLFormattedDateTime() string {
 
 func SQLTimestampToDatetime(timeStr string) (time.Time, error) {
 	layout := "2006-01-02 15:04:05"
-	return time.Parse(layout, timeStr)
+	parsed, err := time.Parse(layout, timeStr)
+	if err != nil {
+		return time.Now(), fmt.Errorf("time.Parse: %w", err)
+	}
+	return parsed, nil
 }
 
 func CalculateVolume(db *sql.DB, pxHeight float64, imageId int64) (float64, error) {
 	zeroheight, ml_per_pixel, err := GetTrialPxInformation(db, imageId)
 	if err != nil {
-		log.Printf("Failed to get trial px information in calculateVolume")
-		return 0, errors.New("failed to get trialPxInformation")
+		return 0, fmt.Errorf("GetTrialPxInformation: %w", err)
 	}
 
 	return (pxHeight - float64(zeroheight)) * ml_per_pixel, nil
 }
 
-func ExtractInformation(r *http.Request) (id int64, pxHeight float64, err error) {
-	id, err1 := strconv.ParseInt(r.Header.Get("id"), 10, 64)
-	if err1 != nil {
-		log.Printf("Failed to parse trialId from request in ExtractInformation\n\t\terror:%s", err1)
-		err := errors.New("failed to parse")
-		return 0, 0, err
+func ExtractInformation(r *http.Request) (id int64, pxHeight float64, error error) {
+	id, err := strconv.ParseInt(r.Header.Get("id"), 10, 64)
+	if err != nil {
+		return 0, 0, fmt.Errorf("strconv.ParseInt: %w", err)
 	}
-	pxHeight, err2 := strconv.ParseFloat(r.Header.Get("pxHeight"), 64)
-	if err2 != nil {
-		log.Printf("Failed to parse pxHeight from request in ExtractInformation\n\t\terror:%s", err2)
-		err := errors.New("failed to parse")
-		return 0, 0, err
+	pxHeight, err = strconv.ParseFloat(r.Header.Get("pxHeight"), 64)
+	if err != nil {
+		return 0, 0, fmt.Errorf("strconv.ParseFloat: %w", err)
 	}
 	return id, pxHeight, nil
 }
