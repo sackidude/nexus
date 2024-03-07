@@ -186,7 +186,7 @@ type viewerTemplate struct {
 func GetTrialTemplate(db *sql.DB) (viewerTemplate, error) {
 	rows, err := db.Query("SELECT trial_num FROM Trials")
 	if err != nil {
-		return viewerTemplate{}, fmt.Errorf("db.Query(SELECT trial_num FROM Trials): %w", err)
+		return viewerTemplate{}, fmt.Errorf("db.Query: %w", err)
 	}
 	var res viewerTemplate
 	for rows.Next() {
