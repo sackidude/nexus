@@ -114,6 +114,7 @@ header {
 .logo {
   max-width: 60px;
   transform: rotate(40deg);
+  cursor: pointer;
 }
 
 nav {
