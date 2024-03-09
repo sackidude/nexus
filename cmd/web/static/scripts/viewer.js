@@ -1,8 +1,6 @@
-var ctx = document.getElementById("mainCanvas");
-
 for (const trial_num in data) {
   const trial_data = data[trial_num];
-  var ctx = document.getElementById("canvas-" + trial_num);
+  const ctx = document.getElementById("canvas-" + trial_num);
 
   const chartData = {
     datasets: [
