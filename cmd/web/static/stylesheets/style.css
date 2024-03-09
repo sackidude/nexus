@@ -266,40 +266,18 @@ ul {
   text-align: center;
 }
 
-@media (hover: hover) {
-  .chart-card .info {
-    display: none;
-  }
+.chart-card button {
+  padding: 0.5rem 2rem;
+  margin-inline: auto;
+}
 
+@media (hover: hover) {
   .chart-card button {
     display: none;
   }
 
-  .chart-card:hover .info {
-    display: block;
-  }
-
-  .chart-card:hover {
-    display: grid;
-    grid-template-columns: auto auto;
-    width: 150%;
-    z-index: 10;
-    outline: 1rem solid var(--light-grey);
-    gap: 1rem;
-  }
-
-  .chart-card:hover h2 {
-    grid-column: 1 / -1;
-  }
-
   .chart-card:hover button {
     display: block;
-    grid-column: 1 / -1;
-  }
-
-  .chart-card:hover img {
-    width: 100%;
-    height: 150%;
   }
 }
 

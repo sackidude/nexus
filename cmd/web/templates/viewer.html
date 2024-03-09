@@ -9,16 +9,7 @@
     <canvas id="canvas-{{.}}" aria-label="Graph showing the results" role="img">
       <p>Data should be displayed here :/</p>
     </canvas>
-    <div class="info">
-      <p>Ingredients</p>
-      <ul>
-        <li>Yeast: 1 g</li>
-        <li>Sugar: 40 g</li>
-      </ul>
-      <p>Timeframe: 24 hr</p>
-      <p>Total CO<sub>2</sub> produced: 1329 ml</p>
-    </div>
-    <button>Open in fullscreen</button>
+    <button hx-get="fullscreen" hx-headers="{}">Open in fullscreen</button>
   </div>
   {{ end }}
 </div>
