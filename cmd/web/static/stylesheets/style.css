@@ -8,6 +8,7 @@
 * {
   margin: 0;
   padding: 0;
+  font: inherit;
 }
 
 html {
@@ -23,7 +24,11 @@ h6 {
   line-height: 1.1;
 }
 
-img {
+img,
+picture,
+svg,
+video,
+canvas {
   display: block;
   max-width: 100%;
 }
@@ -46,143 +51,266 @@ h6 {
 }
 
 /* Setup of colors */
-:root/* [data-theme="light"] */ {
-  --text: #0f0e0a;
-  --background: #fbfbf9;
-  --primary: #afa255;
-  --secondary: #bbc9ac;
-  --accent: #9eb893;
-}
-:root[data-theme="dark"] {
-  --text: #f5f4f0;
-  --background: #060604;
-  --primary: #aa9c50;
-  --secondary: #455336;
-  --accent: #526c47;
+:root {
+  --text: #000000;
+  --background: #f2f2f2;
+  --grey: #8e8e93;
+  --light-grey: #d1d1d6;
+
+  --red: #ff3b30;
+  --orange: #ff9500;
+  --green: #34c759;
+  --blue: #007aff;
 }
 
-/* Fonts */
-.noto-sans-400 {
+html {
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
     Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-  font-optical-sizing: auto;
-  font-weight: 400;
-  font-style: normal;
-  font-variation-settings: "wdth" 100;
 }
 
-/* The styling */
-body {
-  --header-footer-inline-padding: 1rem;
-  background-color: var(--background);
-  color: var(--text);
+/* General */
 
-  height: 100vh;
+h1 {
+  font-weight: 700;
+  font-size: 2rem;
+}
+
+h2 {
+  font-weight: 600;
+  font-size: 1.5rem;
+}
+
+body {
+  min-height: 100vh;
+
+  background-color: var(--light-grey);
+}
+
+.wrapper {
+  width: calc(min(1280px, 100%));
+  margin-inline: auto;
+
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+}
+
+header {
+  background-color: var(--background);
+
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+
+  padding: 1rem;
+
+  border-radius: 0 0 1rem 1rem;
+}
+
+.theme-toggle {
+  max-width: 60px;
+}
+
+.logo {
+  max-width: 60px;
+  transform: rotate(40deg);
+}
+
+nav {
+  justify-self: right;
+  align-self: center;
+}
+
+nav > ul {
+  display: flex;
+  align-items: center;
+
+  list-style: none;
+  gap: 2rem;
+}
+
+nav > ul > li > a {
+  cursor: pointer;
 }
 
 main {
   flex-grow: 1;
 }
 
-header {
-  padding-inline: var(--header-footer-inline-padding);
-
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-
-  background-color: var(--primary);
-
-  border-radius: 0 0 1rem 1rem;
-}
-
-header > img {
-  max-width: 4em;
-  margin-block: 1em;
-}
-
-nav > ul {
-  display: flex;
-  gap: 2em;
-  list-style: none;
-}
-
-nav > ul > li > a {
-  cursor: pointer;
-  padding: 1rem;
-}
-
-nav > ul > li > a:hover {
-  background-color: var(--accent);
-  border-radius: 1rem;
-  color: var(--background);
-}
-
 footer {
-  padding-inline: var(--header-footer-inline-padding);
-  text-align: right;
-
-  background-color: var(--primary);
-  border-radius: 1rem 1rem 0 0;
-}
-
-footer > p {
-  padding-block: 1rem;
+  text-align: center;
+  color: var(--grey);
+  padding: 1rem;
 }
 
 button {
   border: none;
-  padding-inline: 1rem;
-  padding-block: 0.5rem;
-  background-color: var(--secondary);
-  border-radius: 0.5rem;
+  background-color: var(--light-grey);
+  border-radius: 1rem;
+  padding: 0.5rem;
+
+  cursor: pointer;
 }
 
 button:hover,
 button:focus {
-  background-color: var(--accent);
+  background-color: var(--grey);
   color: var(--background);
-  scale: 1.1;
 }
 
-.wrapper {
-  --gutter-space: 1rem;
-  margin-inline: var(--gutter-space);
+a {
+  padding: 1rem;
 }
 
-/* Page specific  */
-/* Start page */
-.wrapper-start {
+a:hover {
+  background-color: var(--light-grey);
+  border-radius: 1rem;
+}
+
+/* Startpage */
+.intro {
+  text-align: center;
+  margin: 2rem 0;
+}
+.intro h1 {
+  display: inline;
+  background-color: var(--background);
+  padding: 1rem 2rem;
+  border-radius: 1rem;
+}
+
+.preview {
+  background-color: var(--background);
+  padding: 1rem;
+  border-radius: 1rem;
+  margin: 1rem;
+
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.preview .title-wrapper {
+  grid-column: 1 / -1;
   text-align: center;
 }
 
-.wrapper-start h1 {
-  margin-top: 1rem;
+.preview button {
+  grid-column: 1 / -1;
 }
 
-/* Classification/Fetcher */
-.wrapper-fetcher {
-  text-align: center;
+.preview img {
+  border-radius: 1rem;
 }
 
-.img-container {
-  position: relative;
+@media (min-width: 900px) {
+  .main-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
 }
 
-.img-container img {
-  border-radius: 0.5rem;
+/* Fetcher */
+.classification-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding-inline: 1rem;
+}
+
+.classification-content > img {
+  border-radius: 1rem;
   cursor: pointer;
 }
 
-.img-container #line {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 1px;
-  background-color: red;
-  display: none;
+.information {
+  background-color: var(--background);
+  border-radius: 1rem;
+  padding: 1rem;
+}
+
+ul {
+  padding-left: 1rem;
+}
+.information h2 {
+  margin-bottom: 1rem;
+}
+
+@media (min-width: 900px) {
+  .classification-content {
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+    grid-template-rows: 1fr 1fr;
+  }
+
+  .classification-content > img {
+    width: 100%;
+    grid-row: 1 / -1;
+  }
+}
+
+/* Data viewer */
+.data-viewer-content {
+  padding-inline: 1rem;
+  display: grid;
+  gap: 1rem;
+}
+.chart-card {
+  background-color: var(--background);
+  padding: 1rem;
+  border-radius: 1rem;
+  align-self: start;
+}
+
+.chart-card h2 {
+  text-align: center;
+}
+
+@media (hover: hover) {
+  .chart-card .info {
+    display: none;
+  }
+
+  .chart-card button {
+    display: none;
+  }
+
+  .chart-card:hover .info {
+    display: block;
+  }
+
+  .chart-card:hover {
+    display: grid;
+    grid-template-columns: auto auto;
+    width: 150%;
+    z-index: 10;
+    outline: 1rem solid var(--light-grey);
+    gap: 1rem;
+  }
+
+  .chart-card:hover h2 {
+    grid-column: 1 / -1;
+  }
+
+  .chart-card:hover button {
+    display: block;
+    grid-column: 1 / -1;
+  }
+
+  .chart-card:hover img {
+    width: 100%;
+    height: 150%;
+  }
+}
+
+@media (min-width: 900px) {
+  .data-viewer-content {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1350px) {
+  .data-viewer-content {
+    grid-template-columns: repeat(3, 1fr);
+  }
 }
