@@ -9,7 +9,13 @@
     <canvas id="canvas-{{.}}" aria-label="Graph showing the results" role="img">
       <p>Data should be displayed here :/</p>
     </canvas>
-    <button hx-get="fullscreen" hx-headers="{}">Open in fullscreen</button>
+    <button
+      hx-get="/fullscreen"
+      hx-headers='{"trial_num": {{.}}}'
+      hx-target="main"
+    >
+      Open in fullscreen
+    </button>
   </div>
   {{ end }}
 </div>

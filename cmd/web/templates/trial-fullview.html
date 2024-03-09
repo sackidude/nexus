@@ -1,0 +1,27 @@
+<div class="intro">
+  <h1>Trial {{ .TrialNum }}</h1>
+</div>
+<div class="trial-content-wrapper">
+  <canvas class="main-canvas" id="main-canvas-{{ .TrialNum }}"
+    >The data should be displayed here</canvas
+  >
+  <div class="trial-information">
+    <h2>Trial information</h2>
+    <p>Started at: {{ .StartTimestamp }}</p>
+    <p>Ingriedient</p>
+    <ul>
+      <li>Yeast: {{ .YeastAmount }} g</li>
+      <li>Sugar: {{ .SugarAmount }} g</li>
+      <li>Stirring: {{ if .Stirring}}Yes{{else}}No{{end}}</li>
+    </ul>
+  </div>
+  <div class="datapoint-states">
+    <h2>Datapoint states</h2>
+  </div>
+  <video src="videos/trial-{{ .TrialNum }}.mp4"></video>
+</div>
+
+<script>
+  var trial_num={{ .TrialNum }}
+</script>
+<script src="scripts/fullscreenViewer.js"></script>

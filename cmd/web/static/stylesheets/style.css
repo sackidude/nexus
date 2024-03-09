@@ -269,6 +269,7 @@ ul {
 .chart-card button {
   padding: 0.5rem 2rem;
   margin-inline: auto;
+  display: block;
 }
 
 @media (hover: hover) {
@@ -290,5 +291,49 @@ ul {
 @media (min-width: 1350px) {
   .data-viewer-content {
     grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* trial full view */
+.trial-content-wrapper {
+  padding: 1rem;
+  display: grid;
+  gap: 1rem;
+}
+
+.trial-content-wrapper > * {
+  background-color: var(--background);
+  padding: 1rem;
+  border-radius: 1rem;
+}
+
+@media (min-width: 600px) {
+  .trial-content-wrapper {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .main-canvas {
+    grid-column: 1 / -1;
+  }
+
+  video {
+    grid-column: 1 / -1;
+    width: 100%;
+  }
+}
+
+@media (min-width: 1280px) {
+  .trial-content-wrapper {
+    grid-template-columns: 1fr 4fr;
+    grid-template-rows: repeat(3, auto);
+  }
+  .main-canvas {
+    grid-column: 2 / -1;
+    grid-row: 1 / span 2;
+  }
+
+  .trial-information {
+    grid-row: 1 / 2;
+    align-self: start;
   }
 }
