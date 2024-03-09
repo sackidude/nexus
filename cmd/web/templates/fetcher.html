@@ -1,18 +1,34 @@
-<div class="wrapper wrapper-fetcher" id="wrapper-fetcher">
-  <section class="fetcher">
-    <div class="image-information">
-      <p>Trial: <span>{{.trial}}</span></p>
-      <p>Image: <span>{{ .image }}</span></p>
-      <p>Time: <span>{{ .time }}</span></p>
-    </div>
-    <div class="img-container">
-      <img id="fetcher-img" src="images/{{ .path }}" alt="upside-down measuring
-      glass filled with water and carbon dioxide that pushes down the water."
-      hx-post="/user-image-data" hx-trigger="click" hx-headers="js:{pxHeight:
-      pxHeight, id: {{.id}}}" {{/*TODO: make sure this is safe*/}}
-      hx-target="#wrapper-fetcher" hx-swap="outerHTML" >
-      <div id="line"></div>
-    </div>
-  </section>
+<div class="intro">
+  <h1>Classification</h1>
+</div>
+<div class="classification-content">
+  <img
+    src="images/{{ .path }}"
+    alt="upside-down measuring
+  glass filled with water and carbon dioxide that pushes down the water."
+    id="fetcher-img"
+    hx-post="/user-image-data"
+    hx-trigger="click"
+    hx-headers="js:{pxHeight:pxHeight, id: {{.id}}}"
+    hx-target="main"
+  />
+  <div class="information information-img">
+    <h2>Image Information</h2>
+    <p>Image: {{ .image }}</p>
+    <p>Time taken: {{ .time }}</p>
+    <p>Times analyzed: 2</p>
+    <p>Last requested: 18:47:23 6/3 - 2024</p>
+  </div>
+  <div class="information information-trial">
+    <h2>Trial Information</h2>
+    <p>Trial: {{.trial}}</p>
+    <p>Started at: 16:22:11 10/2-2023</p>
+    <p>Additional information</p>
+    <ul>
+      <li>Yeast: 1g</li>
+      <li>Sugar: 40g</li>
+      <li>Stirring: no</li>
+    </ul>
+  </div>
 </div>
 <script src="scripts/fetcher.js"></script>
