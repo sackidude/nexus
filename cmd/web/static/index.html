@@ -23,28 +23,85 @@
     <title>Nexus</title>
   </head>
 
-  <body class="noto-sans-400">
-    <header>
-      <img src="web-imgs/logo.svg" alt="Yeast analysis logo" />
-      <nav>
-        <ul>
-          <li>
-            <a hx-get="/start-page" hx-target="main" tabindex="0">Start page</a>
-          </li>
-          <li>
-            <a hx-get="/image-request" hx-target="main" tabindex="0">
-              Classification
-            </a>
-          </li>
-          <li>
-            <a hx-get="/viewer" hx-target="main" tabindex="0">Data viewer</a>
-          </li>
-        </ul>
-      </nav>
-    </header>
+  <body>
+    <div class="wrapper">
+      <header>
+        <img
+          src="web-imgs/icon-sun.svg"
+          alt="theme-toggle"
+          class="theme-toggle"
+        />
+        <img
+          src="web-imgs/logo-flask.svg"
+          alt="Yeast analysis logo"
+          class="logo"
+        />
+        <nav>
+          <ul>
+            <li>
+              <a
+                hx-get="/fragments/startpage-main.html"
+                hx-target="main"
+                tabindex="0"
+                >Start page</a
+              >
+            </li>
+            <li>
+              <a hx-get="/image-request" hx-target="main" tabindex="0">
+                Classification
+              </a>
+            </li>
+            <li>
+              <a hx-get="/viewer" hx-target="main" tabindex="0">Data viewer</a>
+            </li>
+          </ul>
+        </nav>
+      </header>
 
-    <main hx-get="/start-page" hx-trigger="load"></main>
+      <main>
+        <div class="intro">
+          <h1>Yeast analysis</h1>
+        </div>
+        <div class="main-container">
+          <section class="preview">
+            <div class="title-wrapper">
+              <h2>Help us!</h2>
+            </div>
+            <p>
+              We need to analyze
+              <span hx-get="/database-entries" hx-trigger="load">0</span>
+              images. Spot the water level and help us bit by bit.
+            </p>
 
-    <footer><p>© Nils 2024. All rights reserved.</p></footer>
+            <img
+              src="web-imgs/data-preview.jpg"
+              alt="Foto of how the analyzing looks"
+            />
+
+            <button hx-get="/image-request" hx-target="main">
+              Get started
+            </button>
+          </section>
+          <section class="preview">
+            <div class="title-wrapper">
+              <h2>The data</h2>
+            </div>
+            <img
+              src="web-imgs/analyzing-image.jpg"
+              alt="Foto of how the data looks"
+            />
+            <p>See thousands of datapoints over several trials.</p>
+            <button hx-get="/viewer" hx-target="main">Check out</button>
+          </section>
+        </div>
+      </main>
+
+      <footer>
+        <p>
+          © Nils, Teo, Milton, Jinghan 2023-2024 high school work. No rights
+          reserved, everything under MIT License.
+        </p>
+      </footer>
+    </div>
   </body>
 </html>
