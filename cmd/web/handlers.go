@@ -81,6 +81,7 @@ func ImageDataRetrieval(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 	ImageRequest(w, r, db)
 }
 
+// HTTP GET
 func DataBaseEntries(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 	databaseInfo, err := GetDBInfo(db)
 	if err != nil {
@@ -89,4 +90,28 @@ func DataBaseEntries(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 		return
 	}
 	fmt.Fprintf(w, "%d", databaseInfo)
+}
+
+// HTTP GET
+func Fullscreen(w http.ResponseWriter, r *http.Request, db *sql.DB) {
+	trial_num, err := GetTrialNumFromHeader(r)
+	if err != nil {
+		log.Printf("Fullscreen: GetTrialNumFromHeader: %s", err)
+		fmt.Fprint(w, "And unexpected error has occured. Please try again.")
+		return
+	}
+
+	tmpl, err := template.ParseFiles("templates/trial-fullview.html")
+	if err != nil {
+		log.Printf("Fullscreen: template.ParseFiles: %s", err)
+		fmt.Fprint(w, "An unexpected error has occured. Please try again.")
+		return
+	}
+	databaseInfo, err := GetFullTrialInfo(db, trial_num)
+	if err != nil {
+		log.Printf("Fullscreen: GetFullTrialInfo: %s", err)
+		fmt.Fprint(w, "An unexpected error has occured. Please try again")
+		return
+	}
+	tmpl.Execute(w, databaseInfo)
 }

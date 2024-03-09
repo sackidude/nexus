@@ -205,3 +205,31 @@ func GetTrialTemplate(db *sql.DB) (viewerTemplate, error) {
 
 	return res, nil
 }
+
+type trialTemplate struct {
+	TrialNum       int
+	StartTimestamp string
+	YeastAmount    int
+	SugarAmount    int
+	Stirring       bool
+}
+
+func GetFullTrialInfo(db *sql.DB, trial_num int) (trialTemplate, error) {
+	// Query the trial for info.
+	trialRows, err := db.Query("SELECT start, yeast_amount, sugar_amount, stirring FROM Trials LIMIT 1")
+	if err != nil {
+		return trialTemplate{}, fmt.Errorf("db.Query: %w", err)
+	}
+	var start string
+	var yeast_amount int
+	var sugar_amount int
+	var stirringInt int
+	for trialRows.Next() {
+		err = trialRows.Scan(&start, &yeast_amount, &sugar_amount, &stirringInt)
+		if err != nil {
+			return trialTemplate{}, fmt.Errorf("trialRows.Scan: %w", err)
+		}
+	}
+	stirring := stirringInt != 0
+	return trialTemplate{trial_num, start, yeast_amount, sugar_amount, stirring}, nil
+}

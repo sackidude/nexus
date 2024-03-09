@@ -50,6 +50,9 @@ func main() {
 	http.HandleFunc("/database-entries", func(w http.ResponseWriter, r *http.Request) {
 		DataBaseEntries(w, r, db)
 	})
+	http.HandleFunc("/fullscreen", func(w http.ResponseWriter, r *http.Request) {
+		Fullscreen(w, r, db)
+	})
 
 	// HTTP POST handling
 	http.HandleFunc("/user-image-data", func(w http.ResponseWriter, r *http.Request) {

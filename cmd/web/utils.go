@@ -37,3 +37,11 @@ func ExtractInformation(r *http.Request) (id int64, pxHeight float64, err error)
 	}
 	return id, pxHeight, nil
 }
+
+func GetTrialNumFromHeader(r *http.Request) (int, error) {
+	trial_num, err := strconv.ParseInt(r.Header.Get("trial_num"), 10, 32)
+	if err != nil {
+		return 0, fmt.Errorf("strconv.ParseInt(r.Header.Get('trial_num'), 10, 32): %w", err)
+	}
+	return int(trial_num), nil
+}
