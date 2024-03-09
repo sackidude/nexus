@@ -6,17 +6,17 @@ var chartData = {
     {
       label: "Done",
       data: trial_data.done,
-      backgroundColor: "#71bd42",
+      backgroundColor: "#34c759",
     },
     {
       label: "In Progress",
       data: trial_data.inProgress,
-      backgroundColor: "#e05f19",
+      backgroundColor: "#ff9500",
     },
     {
       label: "Unlabeled",
       data: trial_data.unlabeled,
-      backgroundColor: "#382911",
+      backgroundColor: "#ff3b30",
     },
   ],
 };
