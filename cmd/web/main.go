@@ -47,6 +47,9 @@ func main() {
 	http.HandleFunc("/start-page", func(w http.ResponseWriter, r *http.Request) {
 		StartPage(w, r, db)
 	})
+	http.HandleFunc("/database-entries", func(w http.ResponseWriter, r *http.Request) {
+		DataBaseEntries(w, r, db)
+	})
 
 	// HTTP POST handling
 	http.HandleFunc("/user-image-data", func(w http.ResponseWriter, r *http.Request) {
