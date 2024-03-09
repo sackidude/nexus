@@ -1,0 +1,30 @@
+<div class="intro">
+  <h1>Yeast analysis</h1>
+</div>
+<div class="main-container">
+  <section class="preview">
+    <div class="title-wrapper">
+      <h2>Help us!</h2>
+    </div>
+    <p>
+      We need to analyze
+      <span hx-get="/database-entries" hx-trigger="load">0</span>
+      images. Spot the water level and help us bit by bit.
+    </p>
+
+    <img
+      src="web-imgs/data-preview.jpg"
+      alt="Foto of how the analyzing looks"
+    />
+
+    <button hx-get="/image-request" hx-target="main">Get started</button>
+  </section>
+  <section class="preview">
+    <div class="title-wrapper">
+      <h2>The data</h2>
+    </div>
+    <img src="web-imgs/analyzing-image.jpg" alt="Foto of how the data looks" />
+    <p>See thousands of datapoints over several trials.</p>
+    <button hx-get="/viewer" hx-target="main">Check out</button>
+  </section>
+</div>
