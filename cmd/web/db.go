@@ -17,7 +17,7 @@ func GetNewImageData(db *sql.DB) (map[string]string, error) {
 		filename    string
 		pictureTime string
 	)
-	rows, err := db.Query("SELECT id, trial, filename, time FROM images ORDER BY request_date ASC, id ASC LIMIT 1")
+	rows, err := db.Query("SELECT id, trial, filename, time FROM images ORDER BY request_date LIMIT 1")
 	if err != nil {
 		return map[string]string{}, fmt.Errorf("db.Query: %w", err)
 	}
