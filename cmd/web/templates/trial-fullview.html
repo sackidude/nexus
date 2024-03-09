@@ -18,7 +18,9 @@
   <div class="datapoint-states">
     <h2>Datapoint states</h2>
   </div>
-  <video src="videos/trial-{{ .TrialNum }}.mp4"></video>
+  <video controls>
+    <source src="videos/trial-{{ .TrialNum }}.mp4" type="video/mp4" />
+  </video>
 </div>
 
 <script>
