@@ -4,7 +4,6 @@ use axum::{
 };
 use tower_http::services::ServeDir;
 
-mod error;
 mod handlers;
 
 #[tokio::main]
@@ -23,15 +22,16 @@ async fn main() {
 }
 
 fn routes_htmx() -> Router {
+    use handlers as h;
     Router::new()
         // GET requests
-        .route("/", get(handlers::handler_startpage))
-        .route("/startpage", get(handlers::handler_startpage))
-        .route("/viewer", get(handlers::handler_viewer))
-        .route("/image-request", get(handlers::handler_image_request))
-        .route("/fullscreen", get(handlers::handler_fullscreen))
-        // POST requests
-        .route("/user-image-data", post(handlers::handler_user_image_data))
+        .route("/", get(h::startpage::generate))
+        .route("/startpage", get(h::startpage::generate))
+    // .route("/viewer", get(h::viewer::generate))
+    // .route("/image-request", get(h::image_request::generate))
+    // .route("/fullscreen", get(h::fullscreen::generate))
+    // // POST requests
+    // .route("/user-image-data", post(h::user_image_data::generate))
 }
 
 fn routes_static() -> Router {

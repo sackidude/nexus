@@ -1,8 +1,108 @@
-<div class="wrapper wrapper-start">
-  <h1>Yeast analysis</h1>
-  <p>Database entries: <span>{{ . }}</span></p>
-  <div class="btn-container">
-    <button hx-get="/image-request" hx-target="main">Classification</button>
-    <button hx-get="/viewer" hx-target="main">Data viewer</button>
-  </div>
-</div>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- HTMX -->
+    <script
+      src="https://unpkg.com/htmx.org@1.9.10"
+      integrity="sha384-D1Kt99CQMDuVetoL1lrYwg5t+9QdHe7NLX/SoJYkXDFfX37iInKRy5xLSi8nO7UC"
+      crossorigin="anonymous"
+    ></script>
+    <!-- Chart.js -->
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"
+      integrity="sha512-ZwR1/gSZM3ai6vCdI+LVF1zSq/5HznD3ZSTk7kajkaj4D292NLuduDCO1c/NT8Id+jE58KYLKT7hXnbtryGmMg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <!-- Own files -->
+    <link rel="stylesheet" href="stylesheets/style.css" />
+    <script src="scripts/main.js"></script>
+
+    <title>Nexus</title>
+  </head>
+
+  <body>
+    <div class="wrapper">
+      <header>
+        <img
+          src="web-imgs/icon-sun.svg"
+          alt="theme-toggle"
+          class="theme-toggle"
+        />
+        <img
+          src="web-imgs/logo-flask.svg"
+          alt="Yeast analysis logo"
+          class="logo"
+          hx-get="/fragments/startpage-main.html"
+          hx-target="main"
+        />
+        <nav>
+          <ul>
+            <li>
+              <a
+                hx-get="/fragments/startpage-main.html"
+                hx-target="main"
+                tabindex="0"
+                >Start page</a
+              >
+            </li>
+            <li>
+              <a hx-get="/image-request" hx-target="main" tabindex="0">
+                Classification
+              </a>
+            </li>
+            <li>
+              <a hx-get="/viewer" hx-target="main" tabindex="0">Data viewer</a>
+            </li>
+          </ul>
+        </nav>
+      </header>
+
+      <main>
+        <div class="intro">
+          <h1>Yeast analysis</h1>
+        </div>
+        <div class="main-container">
+          <section class="preview">
+            <div class="title-wrapper">
+              <h2>Help us!</h2>
+            </div>
+            <p>
+              We need to analyze {{ number_of_images }} images. Spot the water
+              level and help us bit by bit.
+            </p>
+
+            <img
+              src="web-imgs/data-preview.jpg"
+              alt="Foto of how the analyzing looks"
+            />
+
+            <button hx-get="/image-request" hx-target="main">
+              Get started
+            </button>
+          </section>
+          <section class="preview">
+            <div class="title-wrapper">
+              <h2>The data</h2>
+            </div>
+            <img
+              src="web-imgs/analyzing-image.jpg"
+              alt="Foto of how the data looks"
+            />
+            <p>See thousands of datapoints over several trials.</p>
+            <button hx-get="/viewer" hx-target="main">Check out</button>
+          </section>
+        </div>
+      </main>
+
+      <footer>
+        <p>
+          © Nils, Teo, Milton, Jinghan 2023-2024 high school work. No rights
+          reserved, everything under MIT License.
+        </p>
+      </footer>
+    </div>
+  </body>
+</html>

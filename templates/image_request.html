@@ -3,24 +3,24 @@
 </div>
 <div class="classification-content">
   <img
-    src="images/{{ .path }}"
+    src="images/trial-{{ trial_num }}/{{ image_num }}.jpg"
     alt="upside-down measuring
   glass filled with water and carbon dioxide that pushes down the water."
     id="fetcher-img"
     hx-post="/user-image-data"
-    hx-headers="js:{pxHeight:pxHeight, id: {{.id}}}"
+    hx-headers="js:{pxHeight:pxHeight, id: {{ image_id }}}"
     hx-target="main"
   />
   <div class="information information-img">
     <h2>Image Information</h2>
-    <p>Image: {{ .image }}</p>
-    <p>Time taken: {{ .time }}</p>
+    <p>Image: {{ image_num }}</p>
+    <p>Time taken: {{ time }}</p>
     <p>Times analyzed: 2</p>
     <p>Last requested: 18:47:23 6/3 - 2024</p>
   </div>
   <div class="information information-trial">
     <h2>Trial Information</h2>
-    <p>Trial: {{.trial}}</p>
+    <p>Trial: {{ trial_num }}</p>
     <p>Started at: 16:22:11 10/2-2023</p>
     <p>Additional information</p>
     <ul>

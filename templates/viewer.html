@@ -3,23 +3,23 @@
   <h1>Data viewer</h1>
 </div>
 <div class="data-viewer-content">
-  {{ range .Trial_info }}
+  {% for t in trial_nums %}
   <div class="chart-card">
-    <h2>Trial {{ . }}</h2>
-    <canvas id="canvas-{{.}}" aria-label="Graph showing the results" role="img">
+    <h2>Trial {{ t }}</h2>
+    <canvas id="canvas-{ t }" aria-label="Graph showing the results" role="img">
       <p>Data should be displayed here :/</p>
     </canvas>
     <button
       hx-get="/fullscreen"
-      hx-headers='{"trial_num": {{.}}}'
+      hx-headers='{"trial_num": {{ t }}}'
       hx-target="main"
     >
       Open in fullscreen
     </button>
   </div>
-  {{ end }}
+  {% endfor %}
 </div>
 
 <script>
-  data = {{.Data}}
+  data = {{ chart_data }}
 </script>
