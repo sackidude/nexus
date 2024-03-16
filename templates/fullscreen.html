@@ -1,29 +1,29 @@
 <div class="intro">
-  <h1>Trial {{ .TrialNum }}</h1>
+  <h1>Trial {{ trial_num }}</h1>
 </div>
 <div class="trial-content-wrapper">
-  <canvas class="main-canvas" id="main-canvas-{{ .TrialNum }}"
+  <canvas class="main-canvas" id="main-canvas-{{ trial_num }}"
     >The data should be displayed here</canvas
   >
   <div class="trial-information">
     <h2>Trial information</h2>
-    <p>Started at: {{ .StartTimestamp }}</p>
+    <p>Started at: {{ start_timestamp }}</p>
     <p>Ingriedient</p>
     <ul>
-      <li>Yeast: {{ .YeastAmount }} g</li>
-      <li>Sugar: {{ .SugarAmount }} g</li>
-      <li>Stirring: {{ if .Stirring}}Yes{{else}}No{{end}}</li>
+      <li>Yeast: {{ yeast_amount }} g</li>
+      <li>Sugar: {{ sugar_amount }} g</li>
+      <li>Stirring: {% if stirring %}Yes{% else %}No{% endif %}</li>
     </ul>
   </div>
   <div class="datapoint-states">
     <h2>Datapoint states</h2>
   </div>
   <video controls>
-    <source src="videos/trial-{{ .TrialNum }}.mp4" type="video/mp4" />
+    <source src="videos/trial-{{ trial_num }}.mp4" type="video/mp4" />
   </video>
 </div>
 
 <script>
-  var trial_num={{ .TrialNum }}
+  var trial_num={{ trial_num }}
 </script>
 <script src="scripts/fullscreenViewer.js"></script>

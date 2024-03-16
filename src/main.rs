@@ -27,11 +27,11 @@ fn routes_htmx() -> Router {
         // GET requests
         .route("/", get(h::startpage::generate))
         .route("/startpage", get(h::startpage::generate))
-    // .route("/viewer", get(h::viewer::generate))
-    // .route("/image-request", get(h::image_request::generate))
-    // .route("/fullscreen", get(h::fullscreen::generate))
-    // // POST requests
-    // .route("/user-image-data", post(h::user_image_data::generate))
+        .route("/viewer", get(h::viewer::generate))
+        .route("/image-request", get(h::image_request::generate))
+        .route("/fullscreen", get(h::fullscreen::generate))
+        // POST requests
+        .route("/user-image-data", post(h::user_image_data::generate))
 }
 
 fn routes_static() -> Router {
