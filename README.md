@@ -1,4 +1,5 @@
 # nexus
+
 Data handling website for yeast project.
 
 ## About
@@ -10,3 +11,13 @@ The tech stack include: golang, htmx and mySQL server. Node.js was also use for 
 ## Running and building
 
 Check config/configuration.md for instructions
+
+## Setup for rust
+
+### Terminal 1 - To run the server.
+
+cargo watch -q -c -w src/ -x "run"
+
+### Terminal 2 - To run the tests.
+
+cargo watch -q -c -w examples/ -x "run --example quick_dev"
