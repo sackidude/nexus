@@ -4,9 +4,6 @@
 # Ignore stupid vscode things
 .vscode
 
-# This file is created by go during runtime
-__debug_bin*.exe
-
 # Useful for backing up a file for debugging
 *.bak
 
@@ -15,4 +12,7 @@ node_modules
 package-lock.json
 
 # All the pictures shouldn't be on the git repo, instead just the zipped versions
-cmd/web/static/images/trial-*/*.jpg
+static/images/trial-*/*.jpg
+
+# Rust 
+/target
