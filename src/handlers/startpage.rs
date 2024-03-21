@@ -1,5 +1,13 @@
+use sqlx::Row;
+use std::sync::Arc;
+
 use askama::Template;
-use axum::response::{Html, IntoResponse};
+use axum::{
+    extract::State,
+    response::{Html, IntoResponse},
+};
+
+use crate::AppState;
 
 #[derive(Template)]
 #[template(path = "startpage.html")]
@@ -7,10 +15,16 @@ use axum::response::{Html, IntoResponse};
 struct StartpageTemplate {
     number_of_images: u32,
 }
+#[axum::debug_handler]
+pub async fn generate(State(app_state): State<Arc<AppState>>) -> impl IntoResponse {
+    let img_count: i64 = sqlx::query("SELECT COUNT(*) AS img_count FROM images")
+        .fetch_one(&app_state.db)
+        .await
+        .unwrap()
+        .get("img_count");
 
-pub async fn generate() -> impl IntoResponse {
     let startpage = StartpageTemplate {
-        number_of_images: 800,
+        number_of_images: img_count.try_into().unwrap(), // Infalliable because count can't be negative.
     };
 
     Html(startpage.render().unwrap())
