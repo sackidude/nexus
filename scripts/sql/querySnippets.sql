@@ -60,3 +60,6 @@ DROP COLUMN state
 
 -- @block
 SELECT * FROM Images WHERE trial="4"
+
+-- @block
+DELETE FROM TABLE images
